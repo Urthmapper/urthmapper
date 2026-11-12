@@ -1,0 +1,876 @@
+<!doctype html>
+<!-- ─────────────────────────────────────────────────────────────────────────
+     SMS & PRIVACY POLICY — the page a carrier reads before approving 10DLC.
+
+     THIS FILE EXISTS TWICE: www/privacy.html and landing/privacy.html.
+     www/ and landing/ are separate Netlify sites publishing their own folder
+     with no build step. www.urthmapper.com and the apex serve www/ since
+     2026-08; landing/ still answers on login.urthmapper.com. A URL a carrier reviewer
+     types has to resolve on whichever site actually holds the hostname, so the
+     two copies are byte-identical and must stay that way — edit one, copy it to
+     the other. Same for privacy-thanks.html.
+
+     WHY IT IS SHAPED LIKE THIS. A 10DLC campaign is approved or rejected on
+     evidence, and the reviewer checks a short list against a public URL:
+       • a privacy policy that says, in so many words, that mobile numbers and
+         SMS consent are never shared with third parties for marketing — §3.7
+         carries that sentence in the form the reviewers look for;
+       • messaging program terms: who sends, what about, how often, that rates
+         apply, HELP, STOP, and that carriers aren't liable — §3.1–§3.6;
+       • a call-to-action where consent is actually given, with an UNCHECKED
+         box and the whole disclosure sitting next to it — §4.
+     Those three live on one page on purpose: one URL to paste into the campaign,
+     and a reviewer who never has to go looking for the second half.
+
+     DO NOT pre-check the consent box, move the disclosure away from it, or make
+     any other field depend on it. That box, unchecked and self-describing, IS
+     the opt-in evidence; a pre-checked one is a rejected campaign.
+
+     THE CONTACT DETAILS IN §1 ARE LOAD-BEARING. The postal address is what makes
+     this policy satisfy CAN-SPAM, and the phone is the number the HELP auto-reply
+     promises a human answers — so it has to stay a number someone picks up. They
+     repeat in §3.1 and §14; change all of them together, and change them in
+     the Quo campaign record too (docs/QUO_SMS_SETUP.md §"Campaign of record"),
+     which is the copy the carrier holds on file.
+     ───────────────────────────────────────────────────────────────────────── -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SMS &amp; Privacy Policy — Urthmapper</title>
+<meta name="description" content="How Urthmapper handles text messaging, phone numbers and personal information — the messaging program terms, consent, opt-out, and what we never share. Includes the SMS opt-in and do-not-contact forms.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Urthmapper">
+<meta property="og:title" content="SMS &amp; Privacy Policy — Urthmapper">
+<meta property="og:description" content="Messaging program terms, consent and opt-out, and what we do and don't do with your information.">
+<meta property="og:url" content="https://www.urthmapper.com/privacy">
+<meta property="og:image" content="https://urthmapper.com/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://urthmapper.com/og-card.jpg">
+<meta name="theme-color" content="#DCDACE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B0E0A" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://www.urthmapper.com/privacy">
+<link rel="preload" href="/fonts/Origin-RegularText.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Origin-BlackDisplay.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-LightText.woff2') format('woff2');
+  font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-RegularText.woff2') format('woff2');
+  font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-MediumText.woff2') format('woff2');
+  font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-SemiBoldText.woff2') format('woff2');
+  font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-BoldText.woff2') format('woff2');
+  font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Display';src:url('/fonts/Origin-BoldDisplay.woff2') format('woff2');
+  font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Display';src:url('/fonts/Origin-ExtraBoldDisplay.woff2') format('woff2');
+  font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Display';src:url('/fonts/Origin-BlackDisplay.woff2') format('woff2');
+  font-weight:900;font-style:normal;font-display:swap}
+
+/* Same paper as the home page, same two cuts of Origin, so a reviewer who
+   arrives from the footer never leaves the brand. Tokens are index.html's,
+   copied rather than imported — these are static folders with no build step.
+   See docs/BRAND.md; the Origin files are the foundry's own web builds and the
+   EULA forbids converting or renaming them. */
+:root{
+  --ground:#DCDACE; --sheet:#EFEDE3; --inset:#D2D0C2;
+  --ink:#10130E; --ink-2:#474B3F; --ink-3:#7C8072;
+  --line:#B4B3A2; --line-2:#9A9987;
+  --flag:#E8501E; --flag-ink:#FFFFFF; --hydro:#1F5F6B; --veg:#6E7F22;
+  --flag-wash:#F5DCD2; --veg-wash:#E3E7CD;
+  --disp:'Origin Display','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --body:'Origin Text','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --gut:clamp(18px,4vw,34px);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --ground:#0B0E0A; --sheet:#13170F; --inset:#191D13;
+    --ink:#E9E7D8; --ink-2:#A2A593; --ink-3:#72766A;
+    --line:#2E3326; --line-2:#414736;
+    --flag:#FF6A35; --flag-ink:#12160F; --hydro:#4FB3BF; --veg:#AFC24A;
+    --flag-wash:#24130C; --veg-wash:#1A1F0C;
+  }
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:76px}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);
+  font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+a{color:inherit}
+::selection{background:var(--flag);color:var(--flag-ink)}
+:focus-visible{outline:2px solid var(--flag);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Micro-label. Text 700 per docs/BRAND.md §6 — SemiBold reads too quiet here. */
+.mono{font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3)}
+.wrap{width:100%;max-width:1200px;margin:0 auto;padding:0 var(--gut)}
+
+/* ---------- nav: the marketing standard — near-black, logo bare on it ------- */
+.topnav{position:fixed;inset:0 0 auto;z-index:900;display:flex;align-items:center;
+  gap:26px;padding:11px clamp(14px,3vw,30px);
+  background:#0a0b09;border-bottom:1px solid rgba(255,255,255,.08)}
+.plate{display:inline-flex;align-items:center;text-decoration:none;flex:none;padding:4px 0}
+.plate img{height:22px;width:auto}
+.navlinks{display:flex;align-items:center;gap:24px;margin-left:auto}
+.navlinks a.nl{font-family:var(--disp);font-size:11.5px;font-weight:800;letter-spacing:.04em;
+  text-transform:uppercase;color:#FF6A35;text-decoration:none;transition:color .15s}
+.navlinks a.nl:hover{color:#fff}
+.signin{font-family:var(--disp);font-size:11.5px;font-weight:800;letter-spacing:.04em;
+  text-transform:uppercase;text-decoration:none;color:#FF6A35;
+  border:1px solid #FF6A35;padding:9px 13px;transition:border-color .15s,color .15s,background .15s}
+.signin:hover{background:#FF6A35;color:#0a0b09}
+.burger{display:none;margin-left:auto;background:none;border:0;padding:8px;cursor:pointer}
+.burger span{display:block;width:21px;height:2px;background:#FF6A35;margin:4px 0}
+@media(max-width:860px){
+  .burger{display:block}
+  .navlinks{position:fixed;inset:57px 0 auto;flex-direction:column;align-items:stretch;
+    gap:0;padding:12px clamp(14px,3vw,30px) 22px;background:#0a0b09;
+    border-bottom:1px solid rgba(255,255,255,.08);display:none}
+  body.menu-open .navlinks{display:flex}
+  .navlinks a.nl{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:12px}
+  .signin{margin-top:16px;text-align:center}
+}
+
+/* ---------- hero ---------- */
+.hero{padding:calc(57px + clamp(46px,7vw,88px)) 0 clamp(30px,4vw,44px);
+  border-bottom:2px solid var(--ink)}
+.hero h1{margin-top:14px;font-family:var(--disp);font-weight:800;
+  font-size:clamp(31px,5.2vw,58px);line-height:1.02;letter-spacing:-.012em;
+  text-transform:uppercase;text-wrap:balance;max-width:16ch}
+.hero .lede{margin-top:18px;max-width:60ch;font-size:clamp(16px,1.7vw,18.5px);
+  color:var(--ink-2);text-wrap:pretty}
+.dates{display:flex;flex-wrap:wrap;gap:6px 26px;margin-top:24px}
+
+/* ---------- document frame ---------- */
+.doc{display:grid;grid-template-columns:1fr;gap:0;padding-bottom:clamp(56px,8vw,96px)}
+@media(min-width:1000px){
+  .doc{grid-template-columns:232px minmax(0,1fr);gap:52px;align-items:start}
+  .toc{position:sticky;top:82px;padding-top:38px}
+}
+.toc{padding-top:26px}
+.toc ol{list-style:none;counter-reset:t;margin-top:12px;border-top:1px solid var(--line)}
+.toc li{counter-increment:t;border-bottom:1px solid var(--line)}
+.toc a{display:flex;gap:10px;padding:9px 0;font-size:13.5px;color:var(--ink-2);
+  text-decoration:none;line-height:1.35;transition:color .13s}
+.toc a::before{content:counter(t,decimal-leading-zero);flex:none;font-size:10.5px;
+  font-weight:700;color:var(--ink-3);letter-spacing:.06em;padding-top:3px;
+  font-variant-numeric:tabular-nums}
+.toc a:hover{color:var(--flag)}
+
+.sheet-col{padding-top:26px;min-width:0}
+@media(min-width:1000px){.sheet-col{padding-top:38px}}
+.sec{padding:26px 0 4px;border-top:1px solid var(--line)}
+.sec:first-child{border-top:none;padding-top:6px}
+.sec h2{font-family:var(--disp);font-weight:800;font-size:clamp(21px,2.6vw,27px);
+  letter-spacing:-.02em;line-height:1.16;text-wrap:balance}
+.sec h3{font-family:var(--disp);font-weight:700;font-size:17px;letter-spacing:-.014em;
+  margin-top:24px}
+.sec p,.sec li{max-width:70ch;text-wrap:pretty}
+.sec p{margin-top:12px;color:var(--ink-2)}
+.sec p.tight{margin-top:7px}
+.sec strong,.sec b{color:var(--ink);font-weight:600}
+.sec ul{margin:12px 0 0;padding-left:0;list-style:none}
+.sec ul li{position:relative;padding-left:20px;margin-top:8px;color:var(--ink-2)}
+.sec ul li::before{content:'';position:absolute;left:2px;top:.72em;width:7px;height:1.5px;
+  background:var(--line-2)}
+.sec a{color:var(--hydro);text-underline-offset:2px}
+.sec a:hover{color:var(--flag)}
+.sec .mono{margin-bottom:10px;display:block}
+
+/* The clause a carrier reviewer is looking for. Set apart so it is found in
+   one glance rather than read for. */
+.pull{margin-top:18px;border-left:3px solid var(--flag);background:var(--sheet);
+  padding:16px 20px;max-width:70ch}
+.pull p{margin-top:0;color:var(--ink);font-weight:500}
+.pull p + p{margin-top:10px}
+
+/* Definition rows — the messaging program at a glance. */
+.spec{margin-top:16px;border-top:1px solid var(--line);max-width:70ch}
+.spec > div{display:grid;grid-template-columns:1fr;gap:2px 24px;padding:11px 0;
+  border-bottom:1px solid var(--line)}
+@media(min-width:620px){.spec > div{grid-template-columns:184px minmax(0,1fr)}}
+.spec dt{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-3);padding-top:4px}
+.spec dd{color:var(--ink-2);font-size:15.5px;overflow-wrap:anywhere}
+.spec dd b{color:var(--ink);font-weight:600}
+
+/* ---------- forms ---------- */
+.form-card{margin-top:22px;border:1px solid var(--line);background:var(--sheet)}
+.form-card > .hd{padding:15px 20px;border-bottom:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;justify-content:space-between}
+.form-card > .hd h3{margin-top:0;font-size:16px}
+.form-card > .bd{padding:20px}
+.field{display:flex;flex-direction:column;gap:7px;min-width:0;margin-top:16px}
+.field:first-child{margin-top:0}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.pair .field{margin-top:0}
+@media(max-width:620px){.pair{grid-template-columns:1fr}}
+label.lbl{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3)}
+label.lbl .opt{font-weight:400;letter-spacing:.06em;text-transform:none;color:var(--ink-3)}
+input[type=text],input[type=email],input[type=tel],select,textarea{
+  width:100%;background:var(--inset);border:1px solid var(--line-2);border-radius:0;
+  color:var(--ink);font-family:inherit;font-size:15px;padding:11px 12px;outline:none;
+  transition:border-color .13s,background .13s}
+input::placeholder,textarea::placeholder{color:var(--ink-3)}
+input[type=text]:hover,input[type=email]:hover,input[type=tel]:hover,select:hover,textarea:hover{border-color:var(--ink-3)}
+input[type=text]:focus,input[type=email]:focus,input[type=tel]:focus,select:focus,textarea:focus{
+  border-color:var(--ink);background:var(--sheet)}
+textarea{min-height:82px;resize:vertical;line-height:1.5}
+select{appearance:none;cursor:pointer;padding-right:34px;
+  background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);
+  background-position:calc(100% - 17px) 53%,calc(100% - 12px) 53%;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+
+/* The consent box. It ships UNCHECKED and the whole disclosure sits inside its
+   own label, because that pairing is the evidence — see the header comment. */
+.consent{display:flex;align-items:flex-start;gap:13px;margin-top:22px;padding:16px;
+  border:1.5px solid var(--line-2);background:var(--ground);cursor:pointer;
+  transition:border-color .13s,background .13s}
+.consent:hover{border-color:var(--ink-3)}
+.consent:has(input:checked){border-color:var(--veg);background:var(--veg-wash)}
+.consent input{appearance:none;flex:none;width:19px;height:19px;margin-top:2px;
+  border:1.5px solid var(--line-2);background:var(--sheet);cursor:pointer;position:relative;
+  transition:border-color .13s,background .13s}
+.consent input:checked{background:var(--veg);border-color:var(--veg)}
+.consent input:checked::after{content:'';position:absolute;left:6px;top:1.5px;width:4px;height:10px;
+  border:solid #fff;border-width:0 2px 2px 0;transform:rotate(43deg)}
+.consent span{font-size:14px;line-height:1.55;color:var(--ink-2)}
+.consent b{color:var(--ink);font-weight:600}
+.consent a{color:var(--hydro)}
+
+.send{width:100%;margin-top:20px;border:none;border-radius:0;cursor:pointer;padding:15px 22px;
+  background:var(--flag);color:var(--flag-ink);font-family:var(--disp);font-size:13px;
+  font-weight:800;letter-spacing:.05em;text-transform:uppercase;transition:background .13s}
+.send:hover{background:var(--ink);color:var(--ground)}
+.fine{margin-top:11px;font-size:12.5px;color:var(--ink-3);text-align:center;text-wrap:pretty}
+.alert{display:none;gap:9px;align-items:flex-start;margin-top:16px;padding:11px 13px;
+  border:1px solid var(--flag);background:var(--flag-wash);color:var(--ink);font-size:13.5px}
+.alert[data-show="1"]{display:flex}
+.hp{position:absolute;left:-9999px;opacity:0}
+
+/* ---------- footer ---------- */
+footer{border-top:2px solid var(--ink);padding:clamp(34px,5vw,54px) 0 34px;background:var(--ground)}
+.footrow{display:flex;flex-wrap:wrap;gap:10px 30px;justify-content:space-between;
+  font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--ink-3)}
+.footrow a{color:var(--ink-3);text-decoration:none}
+.footrow a:hover{color:var(--flag)}
+.backhome{display:inline-block;margin-bottom:22px;font-size:14px;color:var(--ink);
+  text-decoration:none}
+.backhome:hover{color:var(--flag)}
+</style>
+</head>
+<body>
+
+<nav class="topnav" aria-label="Main">
+  <a class="plate" href="/wholesalers"><img src="/assets/logo.png" alt="Urthmapper" width="120" height="22"></a>
+  <button class="burger" id="nav-burger" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="navlinks" id="navlinks">
+    <a class="nl" href="#sms">SMS terms</a>
+    <a class="nl" href="#consent">Opt in</a>
+    <a class="nl" href="#optout">Opt out</a>
+    <a class="nl" href="/wholesalers">Home</a>
+    <a class="signin" href="https://login.urthmapper.com">Client sign in</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="mono">Messaging &amp; privacy</p>
+    <h1>SMS &amp; Privacy Policy</h1>
+    <p class="lede">How Urthmapper handles text messages, phone numbers and personal
+      information &mdash; what our messaging program is, how you consent to it, how you
+      stop it in one word, and the things we will not do with your data at any price.</p>
+    <p class="dates">
+      <span class="mono">Effective 25 August 2026</span>
+      <span class="mono">Last updated 27 August 2026</span>
+    </p>
+    <!-- The signpost a 10DLC reviewer needs in the first screenful: the CTA is
+         real and one click away, not buried after three sections of legal text.
+         Added after the 2026-08-27 "couldn't verify opt-in flow" rejection. -->
+    <div class="pull" style="margin-top:22px">
+      <p><b>Looking for the SMS opt-in?</b> The consent form is in
+        <a href="#consent">&sect;4 of this page</a>, and also on its own page at
+        <a href="/sms-optin">urthmapper.com/sms-optin</a>. Consent is an optional,
+        unchecked box &mdash; never a condition of the form. Message frequency varies;
+        message and data rates may apply; reply <b>STOP</b> to opt out or <b>HELP</b>
+        for help.</p>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="doc">
+
+  <nav class="toc" aria-label="Sections">
+    <p class="mono">On this page</p>
+    <ol>
+      <li><a href="#who">Who we are</a></li>
+      <li><a href="#scope">What this policy covers</a></li>
+      <li><a href="#sms">SMS text messaging</a></li>
+      <li><a href="#consent">SMS opt-in form</a></li>
+      <li><a href="#collect">What we collect</a></li>
+      <li><a href="#use">How we use it</a></li>
+      <li><a href="#share">How we share it</a></li>
+      <li><a href="#rights">Your choices and rights</a></li>
+      <li><a href="#optout">Do-not-contact form</a></li>
+      <li><a href="#cookies">Cookies and analytics</a></li>
+      <li><a href="#retention">Retention and security</a></li>
+      <li><a href="#children">Children</a></li>
+      <li><a href="#changes">Changes</a></li>
+      <li><a href="#contact">Contact us</a></li>
+    </ol>
+  </nav>
+
+  <main class="sheet-col">
+
+    <!-- ══ 1 ═══════════════════════════════════════════════════════════════ -->
+    <section class="sec" id="who">
+      <span class="mono">01</span>
+      <h2>Who we are</h2>
+      <p>Urthmapper is a land-intelligence service. We assemble public county parcel and
+        tax records into screened, mapped lead sets for land buyers, and we contact
+        property owners &mdash; as Urthmapper, in our own name &mdash; to ask whether they would consider selling
+        a specific parcel they own.</p>
+      <p>In this policy, <b>&ldquo;we&rdquo;</b>, <b>&ldquo;us&rdquo;</b> and
+        <b>&ldquo;Urthmapper&rdquo;</b> mean the operating entity named below, which is the
+        controller responsible for the information described here.</p>
+      <dl class="spec">
+        <div><dt>Legal entity</dt><dd>Urthmapper LLC</dd></div>
+        <div><dt>Mailing address</dt><dd>30 N Gould St Ste R, Sheridan, WY 82801</dd></div>
+        <div><dt>Email</dt><dd><a href="mailto:ethan@urthmapper.com">ethan@urthmapper.com</a></dd></div>
+        <div><dt>Support phone</dt><dd><a href="tel:+18033874507">(803) 387-4507</a></dd></div>
+        <div><dt>Website</dt><dd><a href="https://www.urthmapper.com/">www.urthmapper.com</a></dd></div>
+      </dl>
+    </section>
+
+    <!-- ══ 2 ═══════════════════════════════════════════════════════════════ -->
+    <section class="sec" id="scope">
+      <span class="mono">02</span>
+      <h2>What this policy covers</h2>
+      <p>This policy covers <b>www.urthmapper.com</b> and <b>urthmapper.com</b>, the buy-box
+        intake form, the client sign-in page, the password-gated lead consoles we operate
+        for clients, and the calls, texts, emails and mail we send to property owners.</p>
+      <p>It does not cover what one of our clients does after we hand them a lead. Each
+        client is an independent business, responsible for its own outreach and its own
+        privacy practices. If a client contacted you and you want them to stop, tell us
+        anyway &mdash; <a href="#optout">the form in &sect;9</a> reaches the source of the
+        record, which is usually faster than chasing the caller.</p>
+    </section>
+
+    <!-- ══ 3 ═══════════════════════════════════════════════════════════════ -->
+    <section class="sec" id="sms">
+      <span class="mono">03</span>
+      <h2>SMS text messaging</h2>
+      <p>This section is our complete messaging program disclosure. It is written to be
+        read by a person who just got a text from us and by the carrier reviewing our
+        campaign, and it describes what the system actually does &mdash; the STOP handling
+        and sending-hour limits below are enforced in code, not by policy alone.</p>
+
+      <h3>3.1 &mdash; The program</h3>
+      <dl class="spec">
+        <div><dt>Program name</dt><dd>Urthmapper Land Acquisition Outreach</dd></div>
+        <div><dt>Who sends</dt><dd><b>Urthmapper</b> &mdash; every message identifies Urthmapper as the sender</dd></div>
+        <div><dt>What it is about</dt><dd>Whether you would consider selling a specific parcel you own, and the follow-up conversation if you reply</dd></div>
+        <div><dt>Who receives</dt><dd>Owners of record identified in public county property records, and people who give us a mobile number directly</dd></div>
+        <div><dt>Message frequency</dt><dd><b>Varies</b> &mdash; typically fewer than 5 messages per month, and often a single message with no follow-up</dd></div>
+        <div><dt>Cost</dt><dd><b>Message and data rates may apply.</b> We charge nothing; your carrier may</dd></div>
+        <div><dt>Sending hours</dt><dd>8:00am&ndash;8:00pm in <b>your</b> local time, never outside it</dd></div>
+        <div><dt>Opt out</dt><dd>Reply <b>STOP</b></dd></div>
+        <div><dt>Help</dt><dd>Reply <b>HELP</b>, or contact us at <a href="tel:+18033874507">(803) 387-4507</a></dd></div>
+      </dl>
+
+      <h3>3.2 &mdash; How we get your number, and what consent means here</h3>
+      <p>There are two paths, and they are different in kind. We tell you which one you are
+        on in the message itself.</p>
+      <ul>
+        <li><b>Public records.</b> Most of our messages are individual, one-to-one business
+          enquiries to an owner of record about a parcel that public county tax and parcel
+          data says they own. The number is obtained lawfully from public and licensed
+          records, not from a purchased marketing list, and the message is about that
+          specific property. This is not a subscription, a marketing list, or recurring
+          messaging, and there is nothing to subscribe to.</li>
+        <li><b>You gave it to us.</b> If you complete <a href="#consent">the opt-in form
+          below</a>, our buy-box form, or an Urthmapper client account, and you tick the
+          consent box, you have expressly agreed to receive texts at that number. Ticking
+          it is optional and is <b>not a condition</b> of any purchase, service or
+          response &mdash; we will still reply by email or phone if you would rather.</li>
+      </ul>
+      <p>We do not buy, rent, or accept mobile numbers from lead vendors for texting, and we
+        do not text a number that reached us on someone else's list.</p>
+
+      <h3>3.3 &mdash; Stopping the messages</h3>
+      <p>Reply <b>STOP</b> to any message. That is the whole procedure. The number is added
+        to a permanent suppression list and no further call or text can be sent to it &mdash;
+        the block is enforced at the database, so no campaign, client or staff member can
+        reach past it, deliberately or by accident. You will get one final confirmation
+        that you have been unsubscribed, and nothing after that.</p>
+      <p class="tight">Other words that stop messages: <b>STOPALL</b>, <b>UNSUBSCRIBE</b>,
+        <b>CANCEL</b>, <b>END</b>, <b>QUIT</b>. Saying &ldquo;no&rdquo;, &ldquo;not
+        interested&rdquo;, or &ldquo;remove me&rdquo; in your own words does the same thing.
+        You can also use <a href="#optout">the do-not-contact form in &sect;9</a>, or email
+        <a href="mailto:ethan@urthmapper.com">ethan@urthmapper.com</a>.</p>
+      <p class="tight">If you opt out and later want back in, text <b>START</b> from the
+        same number, or opt in again through the form &mdash; we will never undo a
+        suppression on our own.</p>
+
+      <h3>3.4 &mdash; Getting help</h3>
+      <p>Reply <b>HELP</b> to any message and you will get our name and a contact number.
+        A person answers.</p>
+
+      <h3>3.5 &mdash; Carriers</h3>
+      <p>Mobile carriers are <b>not liable</b> for delayed or undelivered messages. Delivery
+        is not guaranteed, and not all carriers or handsets are supported.</p>
+
+      <h3>3.6 &mdash; Numbers we never text or call</h3>
+      <p>Some numbers are excluded before any campaign runs, and stay excluded: numbers on
+        the National Do Not Call Registry or otherwise flagged DNC, numbers belonging to
+        known TCPA litigants, and any number that has previously said no in any channel.
+        Those records are contacted by physical mail or not at all.</p>
+
+      <h3 id="never-shared">3.7 &mdash; What we never do with your mobile number</h3>
+      <p>This is the commitment that matters most, so it is stated plainly and without
+        exception:</p>
+      <div class="pull">
+        <p><b>No mobile information will be shared with third parties or affiliates for
+          marketing or promotional purposes.</b></p>
+        <p>All the other categories of sharing described in this policy exclude text
+          messaging originator opt-in data and consent; <b>this information will not be
+          shared with any third parties.</b></p>
+      </div>
+      <p>The only parties that ever see a mobile number for messaging are the licensed
+        messaging carriers that physically deliver the message (today, Telnyx and Twilio),
+        acting solely on our instructions to transmit it. They may not use it for anything
+        else. We do not sell mobile numbers, we do not sell SMS consent, and we do not
+        hand either to an affiliate, a data broker, or an advertising network.</p>
+    </section>
+
+    <!-- ══ 4 ═══════════════════════════════════════════════════════════════ -->
+    <section class="sec" id="consent">
+      <span class="mono">04</span>
+      <h2>SMS opt-in form</h2>
+      <p>Use this if you would like to hear from us &mdash; because you own land you might
+        sell, because you buy land and want deals as they land, or because you would simply
+        rather answer a text than a phone call. <b>The consent box is optional:</b> leave it
+        unticked and we will still reply, just by email or phone, and no texts will be
+        sent. Nothing here is required to use the site.</p>
+
+      <form action='/privacy-thanks.html?k=contact' class='form-card' id='optin' method='POST' name='sms-optin'>
+        <div class="hd">
+          <h3>Reach me at this number</h3>
+          <span class="mono">SMS consent optional &middot; opt out any time</span>
+        </div>
+        <div class="bd">
+          <input type="hidden" name="form-name" value="sms-optin">
+          <p class="hp"><label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+
+          <!-- The consent record. A tick alone proves nothing a year later; the exact
+               wording shown, the page, and the moment are what answer "prove they
+               agreed". The wording below must stay identical to the label's. -->
+          <input type="hidden" name="consent_language" value="I agree to receive text messages from Urthmapper at the mobile number I have provided, about land I own or land I am looking to buy. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. Consent is not a condition of any purchase, and ticking this box is optional - submit without it and we will reply by email or phone instead, and no texts will be sent.">
+          <input type="hidden" name="consent_page" id="oi-page" value="https://www.urthmapper.com/privacy#consent">
+          <input type="hidden" name="consent_timestamp" id="oi-time" value="">
+          <input type="hidden" name="consent_user_agent" id="oi-ua" value="">
+
+          <div class="pair">
+            <div class="field">
+              <label class="lbl" for="oi-name">Your name</label>
+              <input id="oi-name" name="name" type="text" required autocomplete="name" placeholder="Jordan Reyes">
+            </div>
+            <div class="field">
+              <label class="lbl" for="oi-phone">Mobile number</label>
+              <input id="oi-phone" name="mobile_number" type="tel" required autocomplete="tel"
+                     inputmode="tel" placeholder="(555) 010-2288">
+            </div>
+          </div>
+
+          <div class="pair">
+            <div class="field">
+              <label class="lbl" for="oi-email">Email <span class="opt">&middot; optional</span></label>
+              <input id="oi-email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+            </div>
+            <div class="field">
+              <label class="lbl" for="oi-role">This is about</label>
+              <select id="oi-role" name="relationship" required>
+                <option value="">Choose one&hellip;</option>
+                <option value="owner">Land I own</option>
+                <option value="buyer">Land I want to buy</option>
+                <option value="client">My Urthmapper client account</option>
+                <option value="other">Something else</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="lbl" for="oi-parcel">Property, county or parcel number <span class="opt">&middot; optional</span></label>
+            <input id="oi-parcel" name="property" type="text"
+                   placeholder="Duval County, FL &mdash; parcel 012345-0000">
+          </div>
+
+          <div class="field">
+            <label class="lbl" for="oi-notes">Anything you want us to know <span class="opt">&middot; optional</span></label>
+            <textarea id="oi-notes" name="notes"
+              placeholder="Best time to reach me, what I'd want for it, questions&hellip;"></textarea>
+          </div>
+
+          <label class="consent" for="oi-consent">
+            <input id="oi-consent" name="sms_consent" type="checkbox" value="yes">
+            <span><b>I agree to receive text messages from Urthmapper</b> at the mobile
+              number I have provided, about land I own or land I am looking to buy.
+              Message frequency varies. <b>Message and data rates may apply.</b>
+              Reply <b>STOP</b> to opt out, <b>HELP</b> for help. Consent is not a
+              condition of any purchase, <b>and ticking this box is optional</b> &mdash;
+              submit without it and we will reply by email or phone instead, and no
+              texts will be sent. See the <a href="#sms">SMS terms</a> and this
+              <a href="#collect">privacy policy</a>.</span>
+          </label>
+
+          <p class="alert" id="oi-alert" role="alert"><span aria-hidden="true">&#9888;</span><span id="oi-alert-msg"></span></p>
+          <button class="send" type="submit">Send my details</button>
+          <p class="fine">Texts only if you ticked the box &middot; we never share your number &middot; never outside 8am&ndash;8pm your time.</p>
+        </div>
+      </form>
+    </section>
+
+    <!-- ══ 5 ═══════════════════════════════════════════════════════════════ -->
+    <section class="sec" id="collect">
+      <span class="mono">05</span>
+      <h2>What we collect</h2>
+      <h3>5.1 &mdash; Public record data</h3>
+      <p>The bulk of what we hold is public record: parcel identifiers, acreage, land use
+        and zoning codes, assessed and market values, sale history, tax status, flood,
+        wetland and habitat overlays, the owner of record's name, and the situs and
+        mailing address on the roll. Counties publish this; we collect it from their own
+        systems and licensed aggregators.</p>
+      <h3>5.2 &mdash; Contact details</h3>
+      <p>Phone numbers and email addresses matched to an owner of record through licensed
+        skip-trace providers, and contact details you give us yourself through a form, an
+        email, a call or a text reply.</p>
+      <h3>5.3 &mdash; Correspondence and outreach records</h3>
+      <p>What was sent to you and when, whether it was delivered, what you replied, notes a
+        caller took, and any request you made to stop being contacted.</p>
+      <h3>5.4 &mdash; Site data</h3>
+      <p>Standard server logs from our host, and, on the buy-box page only, product
+        analytics recording which sections of the form were completed. <b>No form values are
+        ever sent to analytics.</b> See <a href="#cookies">&sect;10</a>.</p>
+      <p>We do not collect Social Security numbers, financial account numbers, biometric
+        data, precise device location, or any other category of sensitive personal
+        information, and we do not want them &mdash; please don't send them to us.</p>
+    </section>
+
+    <!-- ══ 6 ═══════════════════════════════════════════════════════════════ -->
+    <section class="sec" id="use">
+      <span class="mono">06</span>
+      <h2>How we use it</h2>
+      <ul>
+        <li>To identify parcels that fit a client's stated buying criteria and to build the
+          screened lead sets they see in their console.</li>
+        <li>To contact owners of record, one at a time, to ask whether they would consider
+          selling a specific parcel &mdash; by mail, phone, text or email.</li>
+        <li>To have the resulting conversation, make an offer, and see a transaction
+          through if you want one.</li>
+        <li>To maintain the suppression list, so that a &ldquo;no&rdquo; stays a
+          &ldquo;no&rdquo; permanently.</li>
+        <li>To operate, secure and improve the site and the console, and to answer you when
+          you get in touch.</li>
+        <li>To comply with the law, and to keep the records that telemarketing, messaging
+          and email rules require us to keep.</li>
+      </ul>
+      <p>We do not use your information for automated decision-making that produces a legal
+        or similarly significant effect on you, and we do not profile you for advertising.</p>
+    </section>
+
+    <!-- ══ 7 ═══════════════════════════════════════════════════════════════ -->
+    <section class="sec" id="share">
+      <span class="mono">07</span>
+      <h2>How we share it</h2>
+      <p><b>We do not sell your personal information, and we do not share it for
+        cross-context behavioural advertising.</b> We share it only in these situations:</p>
+      <ul>
+        <li><b>The client buying in your area.</b> If you are an owner of record in a market
+          a client has commissioned, that client receives the lead &mdash; parcel data, your
+          name as owner of record, and contact details where we have them &mdash; so they can
+          make you an offer. Each lead goes to exactly one client.</li>
+        <li><b>Service providers acting for us.</b> Hosting, database, messaging carriers,
+          calling infrastructure, skip-trace providers and mail houses, each contractually
+          limited to doing the job we hired them for and barred from using your data for
+          their own purposes.</li>
+        <li><b>Legal requirements.</b> When we are required to by law, subpoena or court
+          order, or to establish or defend a legal claim.</li>
+        <li><b>A business transfer.</b> If the business is sold or merged, subject to this
+          policy continuing to apply.</li>
+      </ul>
+      <div class="pull">
+        <p>None of the above applies to mobile numbers and SMS consent. As stated in
+          <a href="#never-shared">&sect;3.7</a>: <b>no mobile information will be shared with
+          third parties or affiliates for marketing or promotional purposes, and text
+          messaging originator opt-in data and consent will not be shared with any third
+          parties.</b></p>
+      </div>
+    </section>
+
+    <!-- ══ 8 ═══════════════════════════════════════════════════════════════ -->
+    <section class="sec" id="rights">
+      <span class="mono">08</span>
+      <h2>Your choices and rights</h2>
+      <p>Wherever you live, you can ask us to do all of the following, and we will:</p>
+      <ul>
+        <li><b>Stop contacting you</b> &mdash; by text, call, email, mail, or all four.</li>
+        <li><b>Tell you what we hold</b> about you, where it came from, and who we shared it with.</li>
+        <li><b>Correct</b> anything that is wrong.</li>
+        <li><b>Delete</b> it, except the minimum record needed to keep honouring your
+          opt-out and to meet our own legal obligations.</li>
+        <li><b>Get a copy</b> in a portable format.</li>
+      </ul>
+      <p>Use <a href="#optout">the form in &sect;9</a> or email
+        <a href="mailto:ethan@urthmapper.com">ethan@urthmapper.com</a>. We respond within
+        <b>45 days</b>, and will tell you if we need longer. We may need to verify who you
+        are before acting on a request about a specific record &mdash; usually by confirming
+        details already in that record. <b>We will never charge you or treat you differently
+        for exercising any of these rights.</b></p>
+      <h3>8.1 &mdash; California, and states with similar laws</h3>
+      <p>If you are a California resident, the CCPA/CPRA gives you the rights to know,
+        delete, correct, opt out of sale or sharing, and limit the use of sensitive personal
+        information, plus the right not to be discriminated against for using them. We do
+        not sell or share personal information as those terms are defined, and we do not
+        process sensitive personal information for purposes requiring a limitation right.
+        You may use an authorised agent, and you may appeal a decision by replying to our
+        response within 60 days. Residents of Colorado, Connecticut, Virginia, Utah, Texas
+        and other states with comparable laws have equivalent rights and the same route to
+        exercise them.</p>
+      <h3>8.2 &mdash; Email</h3>
+      <p>Every marketing email we send carries a working unsubscribe link and our physical
+        mailing address, as CAN-SPAM requires. Unsubscribing is honoured promptly and
+        permanently.</p>
+    </section>
+
+    <!-- ══ 9 ═══════════════════════════════════════════════════════════════ -->
+    <section class="sec" id="optout">
+      <span class="mono">09</span>
+      <h2>Do-not-contact and data requests</h2>
+      <p>If we have texted you, <b>replying STOP is faster than this form</b> &mdash; it takes
+        effect immediately and permanently. Use this form for a number or address we have
+        not texted, to stop calls or mail, or to ask what we hold, correct it, or delete it.</p>
+
+      <form action='/privacy-thanks.html?k=optout' class='form-card' id='dnc' method='POST' name='do-not-contact'>
+        <div class="hd">
+          <h3>Take me off your list</h3>
+          <span class="mono">Answered within 45 days</span>
+        </div>
+        <div class="bd">
+          <input type="hidden" name="form-name" value="do-not-contact">
+          <p class="hp"><label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+
+          <div class="field">
+            <label class="lbl" for="dnc-req">What would you like us to do</label>
+            <select id="dnc-req" name="request" required>
+              <option value="">Choose one&hellip;</option>
+              <option value="stop-sms">Stop texting me</option>
+              <option value="stop-calls">Stop calling me</option>
+              <option value="stop-mail">Stop mailing me</option>
+              <option value="stop-all">Stop contacting me by any method</option>
+              <option value="know">Tell me what information you hold about me</option>
+              <option value="correct">Correct information you hold about me</option>
+              <option value="delete">Delete my information</option>
+            </select>
+          </div>
+
+          <div class="pair">
+            <div class="field">
+              <label class="lbl" for="dnc-phone">Phone number</label>
+              <input id="dnc-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"
+                     placeholder="(555) 010-2288">
+            </div>
+            <div class="field">
+              <label class="lbl" for="dnc-email">Email address</label>
+              <input id="dnc-email" name="email" type="email" autocomplete="email"
+                     placeholder="you@example.com">
+            </div>
+          </div>
+          <p class="fine" style="text-align:left;margin-top:9px">Give us at least one of the
+            two, exactly as we have it &mdash; that is how we find your record.</p>
+
+          <div class="pair">
+            <div class="field">
+              <label class="lbl" for="dnc-name">Your name <span class="opt">&middot; optional</span></label>
+              <input id="dnc-name" name="name" type="text" autocomplete="name" placeholder="Jordan Reyes">
+            </div>
+            <div class="field">
+              <label class="lbl" for="dnc-prop">Property or parcel <span class="opt">&middot; optional</span></label>
+              <input id="dnc-prop" name="property" type="text" placeholder="Duval County, FL &mdash; Cedar St lot">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="lbl" for="dnc-notes">Anything else <span class="opt">&middot; optional</span></label>
+            <textarea id="dnc-notes" name="notes"
+              placeholder="Other numbers or addresses to suppress, who contacted you&hellip;"></textarea>
+          </div>
+
+          <p class="alert" id="dnc-alert" role="alert"><span aria-hidden="true">&#9888;</span><span id="dnc-alert-msg"></span></p>
+          <button class="send" type="submit">Send my request</button>
+          <p class="fine">A suppression is permanent. We keep only enough of the record to keep honouring it.</p>
+        </div>
+      </form>
+    </section>
+
+    <!-- ══ 10 ══════════════════════════════════════════════════════════════ -->
+    <section class="sec" id="cookies">
+      <span class="mono">10</span>
+      <h2>Cookies and analytics</h2>
+      <p><b>This site sets no advertising cookies and carries no third-party ad or social
+        trackers.</b> The fonts are served from our own domain, so simply reading this page
+        makes no request to anyone else.</p>
+      <p>Our host keeps standard server logs (IP address, page requested, timestamp,
+        user agent) for security and troubleshooting. The buy-box page can run product
+        analytics that record which sections of the form were completed, using browser
+        local storage rather than cookies, with session recording disabled and
+        Do Not Track respected &mdash; and, as noted in <a href="#collect">&sect;5.4</a>, no
+        field values. The client consoles additionally use privacy-preserving traffic
+        analytics that set no cookies and build no cross-site profile.</p>
+    </section>
+
+    <!-- ══ 11 ══════════════════════════════════════════════════════════════ -->
+    <section class="sec" id="retention">
+      <span class="mono">11</span>
+      <h2>Retention and security</h2>
+      <p>Public parcel records are kept as long as the market is active. Contact details are
+        kept while the lead is live and for as long afterwards as the applicable
+        telemarketing, messaging and email record-keeping rules require. Consent records and
+        opt-out records are kept <b>indefinitely, on purpose</b>: a suppression that expires
+        is a suppression that fails, and a consent record we cannot produce is a consent we
+        cannot prove.</p>
+      <p>Data is held on servers in the United States. Access is restricted by role and
+        denied by default, contact-bearing consoles are password-gated, traffic is encrypted
+        in transit, and credentials that could read personal data never reach a browser. No
+        system is perfectly secure, and we will not claim otherwise &mdash; but if a breach
+        affects you, we will tell you and the relevant regulator as the law requires.</p>
+    </section>
+
+    <!-- ══ 12 ══════════════════════════════════════════════════════════════ -->
+    <section class="sec" id="children">
+      <span class="mono">12</span>
+      <h2>Children</h2>
+      <p>This site and our messaging program are for adults transacting in real property.
+        They are not directed to children, and we do not knowingly collect information from
+        anyone under 18. If you believe a child's information reached us, write to
+        <a href="mailto:ethan@urthmapper.com">ethan@urthmapper.com</a> and we will
+        delete it.</p>
+    </section>
+
+    <!-- ══ 13 ══════════════════════════════════════════════════════════════ -->
+    <section class="sec" id="changes">
+      <span class="mono">13</span>
+      <h2>Changes to this policy</h2>
+      <p>We update this page when what we do changes. The effective date at the top always
+        reflects the current version. If a change materially affects how we use information
+        we already hold about you &mdash; and especially if it touches messaging consent
+        &mdash; we will say so prominently here and, where we can reach you and the law
+        requires it, ask you again rather than assume.</p>
+    </section>
+
+    <!-- ══ 14 ══════════════════════════════════════════════════════════════ -->
+    <section class="sec" id="contact">
+      <span class="mono">14</span>
+      <h2>Contact us</h2>
+      <p>A person reads these. Privacy questions, requests, and complaints:</p>
+      <dl class="spec">
+        <div><dt>Email</dt><dd><a href="mailto:ethan@urthmapper.com">ethan@urthmapper.com</a></dd></div>
+        <div><dt>Mail</dt><dd>Urthmapper LLC, 30 N Gould St Ste R, Sheridan, WY 82801</dd></div>
+        <div><dt>Phone</dt><dd><a href="tel:+18033874507">(803) 387-4507</a></dd></div>
+        <div><dt>Fastest way to stop texts</dt><dd>Reply <b>STOP</b> to any message</dd></div>
+      </dl>
+    </section>
+
+  </main>
+</div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a class="backhome" href="/wholesalers">&larr; Back to urthmapper.com</a>
+    <div class="footrow">
+      <span>&copy; 2026 Urthmapper</span>
+      <span><a href="#sms">SMS terms</a> &middot; <a href="#optout">Do not contact</a></span>
+      <span><a href="mailto:ethan@urthmapper.com">ethan@urthmapper.com</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── mobile nav ────────────────────────────────────────────────────────── */
+(function(){
+  var b=document.getElementById('nav-burger');
+  if(!b) return;
+  b.addEventListener('click',function(){
+    var open=document.body.classList.toggle('menu-open');
+    b.setAttribute('aria-expanded',open?'true':'false');
+  });
+  document.querySelectorAll('#navlinks a').forEach(function(a){
+    a.addEventListener('click',function(){
+      document.body.classList.remove('menu-open');
+      b.setAttribute('aria-expanded','false');
+    });
+  });
+})();
+
+/* ── consent record ────────────────────────────────────────────────────────
+   Stamp the moment, the page and the browser onto the opt-in submission. The
+   `required` checkbox is what the browser enforces; these three fields are what
+   answer "prove they agreed" a year from now, when the tick by itself is just a
+   row in a table. Progressive enhancement only — with JS off the form still
+   posts, and the consent language field (hard-coded in the markup) still goes. */
+(function(){
+  var f=document.getElementById('optin');
+  if(!f) return;
+  var t=document.getElementById('oi-time'),
+      u=document.getElementById('oi-ua'),
+      p=document.getElementById('oi-page');
+  var box=document.getElementById('oi-consent');
+  f.addEventListener('submit',function(){
+    if(t) t.value=new Date().toISOString();
+    if(u) u.value=navigator.userAgent.slice(0,300);
+    if(p) p.value=location.href;
+    // The confirmation page must match what actually happened: the opt-in
+    // outcome only when the (optional) box is ticked, the plain contact
+    // outcome otherwise. Fail-safe: the static action is the contact one.
+    f.action='/privacy-thanks.html?k='+(box&&box.checked?'optin':'contact');
+  });
+})();
+
+/* ── do-not-contact: one contact point is the minimum ──────────────────────
+   Neither field can be `required` on its own — a request may arrive with only a
+   phone or only an email — so the "at least one" rule is checked here, and the
+   message says which field to fill rather than just refusing. */
+(function(){
+  var f=document.getElementById('dnc');
+  if(!f) return;
+  var al=document.getElementById('dnc-alert'),
+      msg=document.getElementById('dnc-alert-msg');
+  f.addEventListener('submit',function(e){
+    var phone=f.querySelector('#dnc-phone').value.trim(),
+        email=f.querySelector('#dnc-email').value.trim();
+    if(phone||email) return;
+    e.preventDefault();
+    msg.textContent='Add the phone number or the email address you want us to act on — '+
+      'without one of them we cannot find your record.';
+    al.setAttribute('data-show','1');
+    f.querySelector('#dnc-phone').focus();
+  });
+  f.addEventListener('input',function(){ al.removeAttribute('data-show'); });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,794 @@
+<!doctype html>
+<!-- ─────────────────────────────────────────────────────────────────────────
+     THE BUY BOX LIVES HERE ONLY (www/, Netlify site `urthmapper-home`).
+
+     It used to exist twice — landing/ and www/ — while the apex served the
+     sign-in site. Since 2026-08 urthmapper.com 301s to www.urthmapper.com, so
+     the landing/ copy was deleted (2026-09-29) and login.urthmapper.com/buybox
+     301s here from landing/netlify.toml. Don't reintroduce a copy: the funnel
+     forks the moment two exist.
+
+     The form is a Netlify Form. Forms must be ENABLED on whichever site serves
+     this page and detected at deploy time — the move to www shipped with Forms
+     off and every submission 404'd for weeks with the page looking perfectly
+     healthy. After any hosting change, submit a real one and check the Forms tab.
+     ───────────────────────────────────────────────────────────────────────── -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Your Buy Box — Urthmapper</title>
+<meta name="description" content="Tell us exactly what you buy — acreage, areas, price, and deal-breakers — and we'll tune your Urthmapper console to surface only the leads that fit.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#DCDACE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B0E0A" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="buybox-hero.jpg" as="image">
+<link rel="preload" href="/fonts/Origin-RegularText.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Origin-BlackDisplay.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-LightText.woff2') format('woff2');
+  font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-RegularText.woff2') format('woff2');
+  font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-MediumText.woff2') format('woff2');
+  font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-SemiBoldText.woff2') format('woff2');
+  font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-BoldText.woff2') format('woff2');
+  font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Display';src:url('/fonts/Origin-BoldDisplay.woff2') format('woff2');
+  font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Display';src:url('/fonts/Origin-ExtraBoldDisplay.woff2') format('woff2');
+  font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Display';src:url('/fonts/Origin-BlackDisplay.woff2') format('woff2');
+  font-weight:900;font-style:normal;font-display:swap}
+
+/* Three faces, three jobs — the same set the home page uses, so the funnel
+   doesn't change typeface at the moment of conversion. All SIL OFL, self-hosted
+   latin subsets, so this page still makes no third-party request.
+     Origin, two optical sizes: 'Origin Display' 700-900 for headings,
+     'Origin Text' for prose (400) and micro-labels/data (600-700 + tracking).
+     See FONT-LICENSE.txt — freeware, but no converting/renaming the files. */
+
+/* ── Urthmapper design system ───────────────────────────────────────────
+   Precision instrument on a light ground. Near-white paper, hairline rules,
+   small radii, no gradients, almost no shadow. Colour is rationed to the logo's
+   own pair: orange acts, green means kept. Red is reserved for exclusions, sand
+   appears exactly once as a deliberate surface, and sky exists only as the
+   ground the logo sits on. Everything else is a warm neutral, so the data stays
+   the loudest thing on the page. */
+:root{
+  --paper:#DCDACE;        /* page ground — mineral, the colour of drafting stock */
+  --surface:#EFEDE3;      /* cards, the raised sheet */
+  --inset:#E4E1D3;        /* field wells — a shade below the sheet so a field reads as cut into it */
+  --sand:#E3E7CD;         /* the one accent surface */
+  --sky:#5BC8CE;          /* the logo's ground — see .plate */
+  --ink:#10130E;          /* primary type */
+  --ink-2:#474B3F;        /* secondary type */
+  --ink-3:#7C8072;        /* labels, captions, placeholders */
+  --rule:#B4B3A2;         /* hairlines */
+  --rule-2:#9A9987;       /* stronger hairline, field borders */
+  /* Map inks, not brand colours: vegetation means kept, flagging orange acts.
+     Each fill carries an --on-* companion, because the fill flips brightness
+     between the two palettes and the mark sitting on it has to flip with it. */
+  --green:#6E7F22;        /* kept / positive / selected */
+  --green-fill:#E3E7CD;
+  --on-green:#FFFFFF;
+  --orange:#E8501E;       /* surveyor's flagging tape — the action accent */
+  --orange-fill:#F5DCD2;
+  --on-orange:#FFFFFF;
+  /* Exclusions are pushed red so they never read as the flagging orange. */
+  --drop-fill:#F3DDD6;
+  --drop-line:#B2331C;
+  --on-drop:#FFFFFF;
+  --ui:'Origin Text','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --disp:'Origin Display','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --body:'Origin Text','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --mono:'Origin Text','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --r:0;                  /* square, because plats have square corners */
+  --gut:clamp(16px,4vw,40px);
+}
+/* Paper by day, drafting table by night — same sheet, different light. */
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#0B0E0A; --surface:#13170F; --inset:#191D13; --sand:#1A1F0C;
+    --ink:#E9E7D8; --ink-2:#A2A593; --ink-3:#72766A;
+    --rule:#2E3326; --rule-2:#414736;
+    --green:#AFC24A; --green-fill:#1A1F0C; --on-green:#12160F;
+    --orange:#FF6A35; --orange-fill:#24130C; --on-orange:#12160F;
+    --drop-fill:#24130C; --drop-line:#FF6A4D; --on-drop:#12160F;
+  }
+}
+
+h1,h2,h3,.btn,.send,.plate{font-family:var(--disp)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--ui);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  font-size:15px;line-height:1.55;letter-spacing:-.005em}
+a{color:inherit;text-decoration:none}
+/* Display is Origin Display at the heavy end — the same institutional
+   panel-header voice the home page uses. Prose is Origin Text at Regular. */
+h1,h2,h3{font-family:var(--disp);font-weight:700;letter-spacing:-.022em}
+.hero h1{font-weight:800}
+.hero p,.note,.fine,.creed p{font-family:var(--body)}
+:focus-visible{outline:2px solid var(--orange);outline-offset:2px;border-radius:3px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+
+/* Micro-label: the recurring precision cue. 11px, wide tracking, upper. */
+.lbl{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);
+  font-variant-numeric:tabular-nums}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+
+/* ── Masthead ───────────────────────────────────────────────────────── */
+.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--rule)}
+.top .in{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  max-width:1240px;margin:0 auto;padding:11px var(--gut)}
+/* The logo carries a white mountain range and lime type drawn for a dark ground,
+   so on paper it needs its own. Sky is that ground: the mountains read against
+   it and both brand colours keep their pop. The logo never sits bare on paper. */
+.plate{display:inline-flex;align-items:center;background:var(--sky);padding:6px 11px}
+.plate img{height:23px;width:auto;display:block}
+.top .back{font-size:12.5px;color:var(--ink-3)}
+.top .back:hover{color:var(--ink)}
+.rail{height:1px;background:var(--rule)}
+.rail i{display:block;height:1px;width:0;background:var(--orange);transition:width .4s cubic-bezier(.4,0,.2,1)}
+
+/* ── Hero: a compact band, not a billboard ──────────────────────────── */
+.hero{position:relative;background:#1a1a17;overflow:hidden}
+.hero .shot{position:absolute;inset:0;background:url('/assets/buybox-hero.jpg') 50% 52%/cover no-repeat;opacity:.72}
+.hero .veil{position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(17,17,17,.62) 0%,rgba(17,17,17,.42) 52%,rgba(17,17,17,.78) 100%)}
+.hero .in{position:relative;max-width:1240px;margin:0 auto;padding:clamp(46px,7vw,84px) var(--gut) clamp(40px,6vw,66px)}
+.hero .lbl{color:rgba(255,255,255,.72)}
+.hero h1{margin-top:14px;font-size:clamp(32px,5vw,56px);font-weight:600;text-transform:uppercase;letter-spacing:-.012em;
+  line-height:1.02;color:#fff;text-wrap:balance;max-width:19ch}
+.hero p{margin-top:16px;max-width:52ch;font-size:clamp(15px,1.6vw,17px);line-height:1.5;
+  color:rgba(255,255,255,.82);text-wrap:pretty}
+.hero .facts{display:flex;flex-wrap:wrap;gap:0 26px;margin-top:26px}
+.hero .facts span{font-size:11px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+  color:rgba(255,255,255,.6)}
+.hero .facts b{color:#fff;font-weight:600}
+
+/* ── Frame ──────────────────────────────────────────────────────────── */
+.wrap{max-width:1240px;margin:0 auto;padding:0 var(--gut) 96px}
+.cols{display:grid;grid-template-columns:1fr;gap:26px;align-items:start;padding-top:30px}
+@media(min-width:1060px){.cols{grid-template-columns:minmax(0,1fr) 320px;gap:34px;padding-top:38px}}
+
+.sheet{display:flex;flex-direction:column;gap:12px;min-width:0}
+
+/* The one sand moment on the page. */
+.creed{background:var(--sand);border-radius:var(--r);padding:20px 24px}
+.creed p{font-size:clamp(16px,2vw,19px);font-weight:500;letter-spacing:-.02em;line-height:1.4;
+  color:var(--ink);text-wrap:pretty}
+
+.block{border:1px solid var(--rule);border-radius:var(--r);background:var(--surface)}
+.block > legend{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.block-hd{display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  padding:15px 20px;border-bottom:1px solid var(--rule)}
+.block-hd h2{font-size:15px;font-weight:600;letter-spacing:-.018em}
+.block-bd{padding:18px 20px 22px;display:flex;flex-direction:column;gap:18px}
+.note{font-size:13px;color:var(--ink-3);margin-top:-6px;text-wrap:pretty}
+
+.field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:620px){.pair{grid-template-columns:1fr}}
+
+input[type=text],input[type=email],input[type=tel],select,textarea{
+  width:100%;background:var(--inset);border:1px solid var(--rule-2);border-radius:0;color:var(--ink);
+  font-family:inherit;font-size:14.5px;padding:10px 12px;outline:none;
+  transition:border-color .13s,background .13s}
+input::placeholder,textarea::placeholder{color:var(--ink-3)}
+input[type=text]:hover,input[type=email]:hover,input[type=tel]:hover,select:hover,textarea:hover{border-color:var(--ink-3)}
+input[type=text]:focus,input[type=email]:focus,input[type=tel]:focus,select:focus,textarea:focus{
+  border-color:var(--ink);background:var(--surface)}
+textarea{min-height:76px;resize:vertical;line-height:1.5}
+select{appearance:none;cursor:pointer;padding-right:34px;
+  background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);
+  background-position:calc(100% - 17px) 53%,calc(100% - 12px) 53%;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+
+/* ── Option grids ───────────────────────────────────────────────────── */
+.grp{display:flex;flex-direction:column;gap:9px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(206px,1fr));gap:6px}
+.opt-item{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;cursor:pointer;
+  border:1px solid var(--rule-2);border-radius:0;background:var(--surface);
+  font-size:14px;color:var(--ink-2);line-height:1.35;
+  transition:border-color .13s,background .13s,color .13s}
+.opt-item:hover{border-color:var(--ink-3);color:var(--ink)}
+.opt-item input{appearance:none;flex:none;width:15px;height:15px;margin-top:2px;border-radius:0;
+  border:1.5px solid var(--rule-2);background:var(--surface);cursor:pointer;position:relative;
+  transition:border-color .13s,background .13s}
+.opt-item input:checked{background:var(--green);border-color:var(--green)}
+.opt-item input:checked::after{content:"";position:absolute;left:4.5px;top:1px;width:3px;height:7.5px;
+  border:solid var(--on-green);border-width:0 1.8px 1.8px 0;transform:rotate(43deg)}
+.opt-item:has(input:checked){border-color:var(--green);background:var(--green-fill);color:var(--ink)}
+/* Exclusions get the opposite semantic: a minus, in rust. */
+.opts.exclude .opt-item input:checked{background:var(--drop-line);border-color:var(--drop-line)}
+.opts.exclude .opt-item input:checked::after{border-color:var(--on-drop);border-width:0 0 1.8px 0;left:3px;top:5.5px;width:7px;height:0;transform:none}
+.opts.exclude .opt-item:has(input:checked){border-color:var(--drop-line);background:var(--drop-fill);color:var(--ink)}
+
+/* ── Ranges ─────────────────────────────────────────────────────────── */
+.range{display:flex;flex-direction:column;gap:9px}
+.range-hd{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.range-val{font-size:15px;font-weight:600;letter-spacing:-.018em;font-variant-numeric:tabular-nums}
+.track{position:relative;height:28px;display:flex;align-items:center}
+.track .bed{position:absolute;left:0;right:0;height:2px;background:var(--rule-2)}
+.track .fill{position:absolute;height:2px;background:var(--ink)}
+.track input[type=range]{position:absolute;left:0;width:100%;margin:0;height:28px;background:transparent;
+  appearance:none;pointer-events:none}
+.track input[type=range]::-webkit-slider-thumb{appearance:none;pointer-events:auto;width:16px;height:16px;
+  border-radius:50%;background:var(--surface);border:1.5px solid var(--ink);cursor:grab;transition:transform .12s}
+.track input[type=range]::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.1)}
+.track input[type=range]::-moz-range-thumb{pointer-events:auto;width:16px;height:16px;border-radius:50%;
+  background:var(--surface);border:1.5px solid var(--ink);cursor:grab}
+.track input[type=range]:focus-visible::-webkit-slider-thumb{outline:2px solid var(--orange);outline-offset:2px}
+.track input[type=range]:focus-visible::-moz-range-thumb{outline:2px solid var(--orange);outline-offset:2px}
+.ticks{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-3);
+  font-variant-numeric:tabular-nums}
+
+/* ── Submit ─────────────────────────────────────────────────────────── */
+.send{width:100%;border:none;border-radius:0;cursor:pointer;padding:15px 22px;background:var(--orange);
+  color:var(--on-orange);font-family:inherit;font-size:15px;font-weight:600;letter-spacing:-.01em;
+  transition:background .13s}
+.send:hover{background:var(--ink)}
+.fine{margin-top:11px;font-size:12px;color:var(--ink-3);text-align:center;text-wrap:pretty}
+.alert{display:none;gap:9px;align-items:flex-start;margin-bottom:12px;padding:11px 13px;border-radius:0;
+  border:1px solid var(--drop-line);background:var(--drop-fill);color:var(--ink);font-size:13.5px}
+.alert[data-show="1"]{display:flex}
+.hp{position:absolute;left:-9999px;opacity:0}
+
+/* ── Live record ────────────────────────────────────────────────────── */
+.record{border:1px solid var(--rule);border-radius:var(--r);background:var(--surface);overflow:hidden}
+@media(min-width:1060px){.record{position:sticky;top:78px}}
+@media(max-width:1059px){.record{order:-1}}
+.record-hd{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  padding:13px 16px;border-bottom:1px solid var(--rule)}
+.record-hd .pc{font-size:11px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;
+  letter-spacing:.06em}
+.gauge{padding:15px 16px 16px;border-bottom:1px solid var(--rule)}
+.gauge .est{font-size:29px;font-weight:600;letter-spacing:-.04em;line-height:1.05;
+  font-variant-numeric:tabular-nums}
+.gauge .est[data-empty="1"]{font-size:14px;font-weight:500;color:var(--ink-3);letter-spacing:-.01em}
+.gauge .cap{font-size:12px;color:var(--ink-3);margin-top:3px;text-wrap:pretty}
+.bars{display:flex;gap:2px;margin-top:12px}
+.bars i{flex:1;height:12px;background:var(--inset);border:1px solid var(--rule);
+  transition:background .28s,border-color .28s}
+.bars i[data-on="1"]{background:var(--orange);border-color:var(--orange)}
+.verdict{font-size:11px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-2);margin-top:9px}
+.rows{padding:2px 16px 14px}
+.rows > div{display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+  padding:8px 0;border-bottom:1px solid var(--rule)}
+.rows > div:last-child{border-bottom:none}
+.rows dt{font-size:12.5px;color:var(--ink-3);flex:none}
+.rows dd{font-size:13px;font-weight:500;text-align:right;font-variant-numeric:tabular-nums;
+  min-width:0;overflow-wrap:anywhere}
+.rows dd.none{color:var(--ink-3);font-weight:400}
+.chips{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end}
+.chips span{font-size:11px;font-weight:500;padding:2px 7px;border-radius:99px;
+  background:var(--green-fill);border:1px solid var(--green);color:var(--ink)}
+.saved{padding:10px 16px;border-top:1px solid var(--rule);font-size:11px;color:var(--ink-3);
+  display:flex;align-items:center;gap:7px}
+.saved[hidden]{display:none}
+.saved .dot{width:4px;height:4px;border-radius:50%;background:var(--green);flex:none}
+
+/* ── Foot ───────────────────────────────────────────────────────────── */
+.foot{border-top:1px solid var(--rule);padding:24px var(--gut);display:flex;flex-wrap:wrap;
+  align-items:center;justify-content:space-between;gap:14px;max-width:1240px;margin:0 auto}
+.foot .plate{padding:0}
+.foot .plate img{height:16px}
+.foot p{font-size:11.5px;color:var(--ink-3)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="in">
+    <a class="plate" href="/wholesalers"><img src="/assets/logo.png" alt="Urthmapper"></a>
+    <a class="back" href="/wholesalers">&larr; urthmapper.com</a>
+  </div>
+  <div class="rail"><i id="rail"></i></div>
+</header>
+
+<section class="hero">
+  <div class="shot" role="img" aria-label="Aerial view of undeveloped parcels"></div>
+  <div class="veil"></div>
+  <div class="in">
+    <p class="lbl">Buy box intake</p>
+    <h1>Tell us what you actually buy.</h1>
+    <p>Every parcel we send is scored against the box you draw here. Draw it tight &mdash;
+       we'd rather send you 300 parcels you'd bid on than 3,000 you'd scroll past.</p>
+    <p class="facts">
+      <span><b>4 min</b> to fill</span>
+      <span><b>48 hrs</b> to a tuned console</span>
+      <span>Change it <b>any time</b></span>
+    </p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="cols">
+
+    <form action='/buybox-thanks' class='sheet' id='bb' method='POST' name='buybox'>
+      <input type="hidden" name="form-name" value="buybox">
+      <p class="hp"><label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+
+      <!-- Slider-driven values. Named hidden inputs carry the human-readable result
+           so a submission records "0.25" / "40" / "$50,000", not a slider index.
+           Defaults live in the markup so a no-JS submit still carries numbers. -->
+      <input type="hidden" name="acreage_min" id="h-acmin" value="0.25">
+      <input type="hidden" name="acreage_max" id="h-acmax" value="40">
+      <input type="hidden" name="max_price"   id="h-price" value="$50,000">
+
+      <div class="creed"><p>We'd rather send you 300 perfect parcels than 3,000 maybes.</p></div>
+
+      <fieldset class="block">
+        <legend>Who you are</legend>
+        <div class="block-hd"><h2>Who you are</h2><span class="lbl" id="t-you">0 of 2</span></div>
+        <div class="block-bd">
+          <div class="pair">
+            <div class="field"><label class="lbl" for="name">Name</label>
+              <input id="name" name="name" type="text" required autocomplete="name" placeholder="Jordan Reyes"></div>
+            <div class="field"><label class="lbl" for="email">Email</label>
+              <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@company.com"></div>
+          </div>
+          <div class="pair">
+            <div class="field"><label class="lbl" for="phone">Phone &middot; optional</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="(555) 010-2288"></div>
+            <div class="field"><label class="lbl" for="company">Company &middot; optional</label>
+              <input id="company" name="company" type="text" autocomplete="organization" placeholder="Reyes Land Co."></div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="block">
+        <legend>Where you buy</legend>
+        <div class="block-hd"><h2>Where you buy</h2><span class="lbl" id="t-mkt">No markets</span></div>
+        <div class="block-bd">
+          <p class="note">Name counties, not states &mdash; &ldquo;Lee County FL&rdquo; tunes the console,
+            &ldquo;Florida&rdquo; doesn't. Separate several with commas.</p>
+          <div class="field"><label class="lbl" for="areas">Counties, cities or regions you work</label>
+            <textarea id="areas" name="target_areas" required
+              placeholder="Lee County FL, Polk County FL, Cherokee County TX"></textarea></div>
+          <div class="field"><label class="lbl" for="avoid-areas">Anywhere you'd never buy &middot; optional</label>
+            <input id="avoid-areas" name="avoid_areas" type="text"
+              placeholder="Coastal barrier islands, anything inside city limits"></div>
+        </div>
+      </fieldset>
+
+      <fieldset class="block">
+        <legend>The dirt</legend>
+        <div class="block-hd"><h2>The dirt</h2><span class="lbl" id="t-dirt">0 land types</span></div>
+        <div class="block-bd">
+
+          <div class="range">
+            <div class="range-hd"><span class="lbl">Parcel size</span>
+              <span class="range-val" id="ac-label">0.25 &ndash; 40 acres</span></div>
+            <div class="track" id="ac-track">
+              <div class="bed"></div><div class="fill" id="ac-fill"></div>
+              <input type="range" id="ac-min" min="0" max="12" value="1" step="1" aria-label="Minimum acreage">
+              <input type="range" id="ac-max" min="0" max="12" value="8" step="1" aria-label="Maximum acreage">
+            </div>
+            <div class="ticks"><span>0</span><span>1</span><span>10</span><span>80</span><span>640+</span></div>
+          </div>
+
+          <div class="grp">
+            <span class="lbl">Land types you'll buy</span>
+            <div class="opts" data-count="lt">
+              <label class="opt-item"><input type="checkbox" name="land_types" value="vacant-residential" checked> Vacant residential lots</label>
+              <label class="opt-item"><input type="checkbox" name="land_types" value="acreage-rural"> Rural acreage</label>
+              <label class="opt-item"><input type="checkbox" name="land_types" value="agricultural"> Agricultural / timber</label>
+              <label class="opt-item"><input type="checkbox" name="land_types" value="commercial"> Commercial / mixed-use</label>
+              <label class="opt-item"><input type="checkbox" name="land_types" value="infill"> Urban infill</label>
+              <label class="opt-item"><input type="checkbox" name="land_types" value="waterfront"> Waterfront / water features</label>
+            </div>
+          </div>
+
+          <div class="grp">
+            <span class="lbl">Must-haves &mdash; we drop anything missing these</span>
+            <div class="opts" data-count="mh">
+              <label class="opt-item"><input type="checkbox" name="must_have" value="road-access"> Legal road access</label>
+              <label class="opt-item"><input type="checkbox" name="must_have" value="power"> Power at or near the road</label>
+              <label class="opt-item"><input type="checkbox" name="must_have" value="water-sewer"> Water / sewer available</label>
+              <label class="opt-item"><input type="checkbox" name="must_have" value="mobile-ok"> Mobile-home-friendly zoning</label>
+              <label class="opt-item"><input type="checkbox" name="must_have" value="buildable"> Buildable (not mostly wetland)</label>
+              <label class="opt-item"><input type="checkbox" name="must_have" value="subdividable"> Subdivision potential</label>
+            </div>
+          </div>
+
+          <div class="grp">
+            <span class="lbl">Deal-breakers &mdash; filtered out before you see them</span>
+            <div class="opts exclude" data-count="db">
+              <label class="opt-item"><input type="checkbox" name="deal_breakers" value="flood-zone" checked> FEMA flood zone (SFHA)</label>
+              <label class="opt-item"><input type="checkbox" name="deal_breakers" value="wetlands"> Wetlands on parcel</label>
+              <label class="opt-item"><input type="checkbox" name="deal_breakers" value="landlocked"> Landlocked / easement-only</label>
+              <label class="opt-item"><input type="checkbox" name="deal_breakers" value="protected-habitat"> Protected habitat overlays</label>
+              <label class="opt-item"><input type="checkbox" name="deal_breakers" value="hoa"> HOA / heavy deed restrictions</label>
+              <label class="opt-item"><input type="checkbox" name="deal_breakers" value="liens"> Liens / title complications</label>
+            </div>
+          </div>
+
+        </div>
+      </fieldset>
+
+      <fieldset class="block">
+        <legend>The money</legend>
+        <div class="block-hd"><h2>The money</h2><span class="lbl" id="t-money">Exit not set</span></div>
+        <div class="block-bd">
+
+          <div class="range">
+            <div class="range-hd"><span class="lbl">Most you'd pay for one deal</span>
+              <span class="range-val" id="pr-label">$50,000</span></div>
+            <div class="track" id="pr-track">
+              <div class="bed"></div><div class="fill" id="pr-fill"></div>
+              <input type="range" id="pr" min="0" max="12" value="3" step="1" aria-label="Maximum purchase price per deal">
+            </div>
+            <div class="ticks"><span>$5k</span><span>$50k</span><span>$150k</span><span>$400k</span><span>$1M+</span></div>
+          </div>
+
+          <div class="pair">
+            <div class="field"><label class="lbl" for="ppa">Target price per acre &middot; optional</label>
+              <input id="ppa" name="target_ppa" type="text" placeholder="Under $3,000 / acre"></div>
+            <div class="field"><label class="lbl" for="exit">Primary exit</label>
+              <select id="exit" name="exit_strategy" required>
+                <option value="" disabled selected>Choose one&hellip;</option>
+                <option value="flip">Flip / wholesale as-is</option>
+                <option value="subdivide">Subdivide &amp; sell lots</option>
+                <option value="seller-finance">Sell with owner financing</option>
+                <option value="develop">Develop / build</option>
+                <option value="hold">Buy &amp; hold</option>
+                <option value="mixed">Mix of the above</option>
+              </select></div>
+          </div>
+          <div class="pair">
+            <div class="field"><label class="lbl" for="pace">Deals you want a month &middot; optional</label>
+              <input id="pace" name="deals_per_month" type="text" placeholder="3&ndash;5"></div>
+            <div class="field"><label class="lbl" for="outreach">How you reach owners &middot; optional</label>
+              <select id="outreach" name="outreach_method">
+                <option value="" disabled selected>Choose&hellip;</option>
+                <option value="mail">Direct mail</option>
+                <option value="calls-texts">Calls &amp; texts</option>
+                <option value="both">Both</option>
+                <option value="other">Other / agents</option>
+              </select></div>
+          </div>
+
+        </div>
+      </fieldset>
+
+      <fieldset class="block">
+        <legend>What makes a seller sell</legend>
+        <div class="block-hd"><h2>What makes a seller sell</h2><span class="lbl" id="t-sig">0 weighted</span></div>
+        <div class="block-bd">
+          <p class="note">We score every owner in your markets. Tick the motivations you want pushed
+            to the top of the list.</p>
+          <div class="opts" data-count="sg">
+            <label class="opt-item"><input type="checkbox" name="priority_signals" value="out-of-state" checked> Out-of-state owners</label>
+            <label class="opt-item"><input type="checkbox" name="priority_signals" value="long-hold" checked> Long hold times (10+ yrs)</label>
+            <label class="opt-item"><input type="checkbox" name="priority_signals" value="tax-delinquent"> Tax-delinquent</label>
+            <label class="opt-item"><input type="checkbox" name="priority_signals" value="absentee"> Absentee (in-state)</label>
+            <label class="opt-item"><input type="checkbox" name="priority_signals" value="portfolio"> Multi-parcel owners</label>
+            <label class="opt-item"><input type="checkbox" name="priority_signals" value="below-market"> Assessed far below market</label>
+          </div>
+          <div class="field"><label class="lbl" for="notes">Anything else we should know &middot; optional</label>
+            <textarea id="notes" name="notes"
+              placeholder="We close cash in 10 days and can take down 3 at a time. Odd niches, counties you've had luck in, title quirks you avoid&hellip;"></textarea></div>
+        </div>
+      </fieldset>
+
+      <div>
+        <p class="alert" id="alert" role="alert"><span aria-hidden="true">&#9888;</span><span id="alert-msg"></span></p>
+        <button class="send" type="submit">Send my buy box</button>
+        <p class="fine">Goes straight to the team &middot; no list, no spam &middot; we reply within 48 hours with your tuned console<br>
+          This form takes a phone number, so it links what we do with it: <a href="/privacy" style="color:var(--ink-2);text-decoration:underline;text-underline-offset:2px">SMS &amp; privacy policy</a></p>
+      </div>
+    </form>
+
+    <aside class="record" aria-label="Your buy box so far">
+      <div class="record-hd"><span class="lbl">Your buy box</span><span class="pc" id="pc">0% complete</span></div>
+
+      <div class="gauge">
+        <div class="est" id="est" data-empty="1" aria-live="polite">Waiting on your markets</div>
+        <div class="cap" id="est-cap">Then we&rsquo;ll show roughly how many parcels a month fit this box.</div>
+        <div class="bars" id="bars" aria-hidden="true"></div>
+        <div class="verdict" id="verdict"></div>
+      </div>
+
+      <dl class="rows">
+        <div><dt>Markets</dt><dd id="r-mkt" class="none">Not set</dd></div>
+        <div><dt>Parcel size</dt><dd id="r-ac">0.25 &ndash; 40 acres</dd></div>
+        <div><dt>Ceiling</dt><dd id="r-pr">$50,000</dd></div>
+        <div><dt>Exit</dt><dd id="r-exit" class="none">Not set</dd></div>
+        <div><dt>Land types</dt><dd id="r-lt">1 of 6</dd></div>
+        <div><dt>Must-haves</dt><dd id="r-mh" class="none">None</dd></div>
+        <div><dt>Deal-breakers</dt><dd id="r-db">1 of 6</dd></div>
+        <div><dt>Signals weighted</dt><dd id="r-sg">2 of 6</dd></div>
+      </dl>
+
+      <p class="saved" id="saved" hidden><span class="dot"></span><span>Draft saved on this device</span></p>
+    </aside>
+
+  </div>
+</div>
+
+<footer class="foot">
+  <span class="mark"><span class="x" aria-hidden="true">&#10011;</span><b>Urth</b><i>mapper</i></span>
+  <p>&copy; 2026 Urthmapper &middot; Off-market land, on your map</p>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var form = $('bb');
+  if (!form) return;
+
+  // Stepped scales. Land buyers think in thresholds ("quarter acre", "under 40"),
+  // not in a linear sweep, so each slider walks real breakpoints. Both carry 13
+  // stops so the tick labels sit exactly on quarter positions (0, 3, 6, 9, 12).
+  var AC = [0, 0.25, 0.5, 1, 2, 5, 10, 20, 40, 80, 160, 320, 640];
+  var PRICE = [5000, 10000, 25000, 50000, 75000, 100000, 150000, 200000, 300000,
+               400000, 500000, 750000, 1000000];
+  var LAST_AC = AC.length - 1, LAST_PR = PRICE.length - 1;
+  var DRAFT = 'urthmapper.buybox.draft.v2';
+
+  function acText(i) { return i === LAST_AC ? '640+' : String(AC[i]); }
+  function prText(i) { return i === LAST_PR ? '$1M+' : '$' + PRICE[i].toLocaleString('en-US'); }
+
+  var acMin = $('ac-min'), acMax = $('ac-max'), pr = $('pr');
+
+  // Keep the two acreage thumbs from crossing, and make sure the one you grabbed
+  // is the one that moves when both sit on the same stop.
+  function clampPair(moved) {
+    var lo = +acMin.value, hi = +acMax.value;
+    if (lo > hi) {
+      if (moved === 'min') acMax.value = String(lo); else acMin.value = String(hi);
+    }
+    acMin.style.zIndex = (+acMin.value >= LAST_AC - 1) ? '4' : '3';
+  }
+
+  var bars = $('bars');
+  for (var b = 0; b < 12; b++) bars.appendChild(document.createElement('i'));
+  var barEls = bars.children;
+
+  function checkedIn(group) {
+    return form.querySelectorAll('.opts[data-count="' + group + '"] input:checked').length;
+  }
+  function markets() {
+    return ($('areas').value || '').split(/[,\n;·]+/)
+      .map(function (s) { return s.trim(); }).filter(Boolean);
+  }
+  function setTally(id, text, on) {
+    var el = $(id);
+    el.textContent = text;
+    el.style.color = on ? 'var(--ink)' : '';
+  }
+  function setRow(id, text, emptyText) {
+    var el = $(id);
+    el.textContent = text || emptyText;
+    el.className = text ? '' : 'none';
+  }
+
+  function render() {
+    var lo = +acMin.value, hi = +acMax.value, p = +pr.value;
+
+    var pLo = (lo / LAST_AC) * 100, pHi = (hi / LAST_AC) * 100;
+    $('ac-fill').style.left = pLo + '%';
+    $('ac-fill').style.width = (pHi - pLo) + '%';
+    $('pr-fill').style.left = '0%';
+    $('pr-fill').style.width = ((p / LAST_PR) * 100) + '%';
+
+    var acLabel = acText(lo) + ' – ' + acText(hi) + ' acres';
+    $('ac-label').textContent = acLabel;
+    $('pr-label').textContent = prText(p);
+    $('h-acmin').value = acText(lo);
+    $('h-acmax').value = acText(hi);
+    $('h-price').value = prText(p);
+
+    var lt = checkedIn('lt'), mh = checkedIn('mh'), db = checkedIn('db'), sg = checkedIn('sg');
+    var mk = markets();
+    var exitSel = $('exit');
+    var exitTxt = exitSel.selectedIndex > 0 ? exitSel.options[exitSel.selectedIndex].text : '';
+
+    // Section tallies double as a to-do: they say what is still blank.
+    var youDone = (($('name').value || '').trim() ? 1 : 0) + (($('email').value || '').trim() ? 1 : 0);
+    setTally('t-you', youDone + ' of 2', youDone === 2);
+    setTally('t-mkt', mk.length ? (mk.length + (mk.length === 1 ? ' market' : ' markets')) : 'No markets', mk.length > 0);
+    setTally('t-dirt', lt + (lt === 1 ? ' land type' : ' land types'), lt > 0);
+    setTally('t-money', exitTxt || 'Exit not set', !!exitTxt);
+    setTally('t-sig', sg + ' weighted', sg > 0);
+
+    var rMkt = $('r-mkt');
+    if (mk.length) {
+      rMkt.className = '';
+      rMkt.innerHTML = '';
+      var chips = document.createElement('span');
+      chips.className = 'chips';
+      mk.slice(0, 6).forEach(function (m) {
+        var c = document.createElement('span');
+        c.textContent = m.length > 26 ? m.slice(0, 25) + '…' : m;
+        chips.appendChild(c);
+      });
+      if (mk.length > 6) {
+        var more = document.createElement('span');
+        more.textContent = '+' + (mk.length - 6);
+        chips.appendChild(more);
+      }
+      rMkt.appendChild(chips);
+    } else {
+      rMkt.className = 'none';
+      rMkt.textContent = 'Not set';
+    }
+    $('r-ac').textContent = acLabel;
+    $('r-pr').textContent = prText(p);
+    setRow('r-exit', exitTxt, 'Not set');
+    setRow('r-lt', lt ? lt + ' of 6' : '', 'None');
+    setRow('r-mh', mh ? mh + ' of 6' : '', 'None');
+    setRow('r-db', db ? db + ' of 6' : '', 'None');
+    setRow('r-sg', sg ? sg + ' of 6' : '', 'None');
+
+    // Completion: the five things that actually change what we send.
+    var done = (youDone === 2 ? 1 : 0) + (mk.length ? 1 : 0) + (lt ? 1 : 0)
+             + (exitTxt ? 1 : 0) + (sg ? 1 : 0);
+    var pct = Math.round((done / 5) * 100);
+    $('pc').textContent = pct + '% complete';
+    $('rail').style.width = pct + '%';
+
+    // Volume estimate. Deliberately a range and labelled a rough read — it is a
+    // shaping aid, not a promise, and the copy says so.
+    var est = $('est'), cap = $('est-cap'), verdict = $('verdict'), filled = 0;
+    if (!mk.length || !lt) {
+      est.setAttribute('data-empty', '1');
+      est.textContent = !mk.length ? 'Waiting on your markets' : 'Waiting on a land type';
+      cap.textContent = 'Then we’ll show roughly how many parcels a month fit this box.';
+      verdict.textContent = '';
+    } else {
+      est.removeAttribute('data-empty');
+      var span = (hi - lo) / LAST_AC;
+      var n = mk.length * 150
+        * (0.4 + 0.6 * span)
+        * (0.45 + 0.85 * (p / LAST_PR))
+        * Math.min(1, 0.45 + 0.12 * lt)
+        * Math.pow(0.9, mh)
+        * Math.pow(0.86, db);
+      var mid = Math.max(10, Math.round(n / 10) * 10);
+      var loN = Math.max(5, Math.round(mid * 0.8 / 5) * 5);
+      var hiN = Math.round(mid * 1.25 / 5) * 5;
+      est.textContent = loN.toLocaleString('en-US') + '–' + hiN.toLocaleString('en-US');
+      cap.textContent = 'parcels a month, roughly, in your markets';
+      verdict.textContent = mid < 70 ? 'Tight box — high signal, low volume'
+        : mid > 900 ? 'Broad box — worth narrowing' : 'Balanced box';
+      filled = Math.max(1, Math.min(12, Math.round(Math.log(mid / 8) / Math.log(2.1))));
+    }
+    for (var i = 0; i < barEls.length; i++) {
+      barEls[i].setAttribute('data-on', i < filled ? '1' : '0');
+    }
+  }
+
+  // ── Draft persistence ────────────────────────────────────────────────
+  var savedFlag = $('saved'), saveTimer;
+  function snapshot() {
+    var d = { text: {}, checks: [], ac: [acMin.value, acMax.value], pr: pr.value };
+    form.querySelectorAll('input[type=text],input[type=email],input[type=tel],textarea,select')
+      .forEach(function (el) { if (el.name && el.value) d.text[el.name + '|' + el.id] = el.value; });
+    form.querySelectorAll('.opts input:checked')
+      .forEach(function (el) { d.checks.push(el.name + '|' + el.value); });
+    return d;
+  }
+  function save() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () {
+      try {
+        localStorage.setItem(DRAFT, JSON.stringify(snapshot()));
+        savedFlag.hidden = false;
+      } catch (e) { /* private mode — the form still works, it just won't persist */ }
+    }, 400);
+  }
+  function restore() {
+    var raw;
+    try { raw = localStorage.getItem(DRAFT); } catch (e) { return; }
+    if (!raw) return;
+    var d;
+    try { d = JSON.parse(raw); } catch (e) { return; }
+    Object.keys(d.text || {}).forEach(function (k) {
+      var el = $(k.split('|')[1]);
+      if (el) el.value = d.text[k];
+    });
+    if (d.checks) {
+      form.querySelectorAll('.opts input').forEach(function (el) {
+        el.checked = d.checks.indexOf(el.name + '|' + el.value) !== -1;
+      });
+    }
+    if (d.ac) { acMin.value = d.ac[0]; acMax.value = d.ac[1]; }
+    if (d.pr !== undefined) pr.value = d.pr;
+    savedFlag.hidden = false;
+  }
+
+  // ── Wiring ───────────────────────────────────────────────────────────
+  acMin.addEventListener('input', function () { clampPair('min'); render(); save(); });
+  acMax.addEventListener('input', function () { clampPair('max'); render(); save(); });
+  pr.addEventListener('input', function () { render(); save(); });
+
+  // Clicking the bed jumps the nearest thumb, so the whole track is a target.
+  $('ac-track').addEventListener('pointerdown', function (e) {
+    if (e.target.type === 'range') return;
+    var r = this.getBoundingClientRect();
+    var i = Math.max(0, Math.min(LAST_AC, Math.round(((e.clientX - r.left) / r.width) * LAST_AC)));
+    if (Math.abs(i - +acMin.value) <= Math.abs(i - +acMax.value)) acMin.value = String(i);
+    else acMax.value = String(i);
+    clampPair(null); render(); save();
+  });
+  $('pr-track').addEventListener('pointerdown', function (e) {
+    if (e.target.type === 'range') return;
+    var r = this.getBoundingClientRect();
+    pr.value = String(Math.max(0, Math.min(LAST_PR,
+      Math.round(((e.clientX - r.left) / r.width) * LAST_PR))));
+    render(); save();
+  });
+
+  form.addEventListener('input', function (e) { if (e.target.type !== 'range') { render(); save(); } });
+  form.addEventListener('change', function () { render(); save(); });
+
+  // Native validation covers the text fields; this covers the one rule it cannot
+  // express — a checkbox group that must not be empty.
+  form.addEventListener('submit', function (e) {
+    var alertBox = $('alert');
+    if (!checkedIn('lt')) {
+      e.preventDefault();
+      $('alert-msg').textContent = 'Pick at least one land type — without it we can’t tell which parcels to score.';
+      alertBox.setAttribute('data-show', '1');
+      var first = form.querySelector('.opts[data-count="lt"] input');
+      if (first) { first.focus(); first.closest('.grp').scrollIntoView({ block: 'center' }); }
+      return;
+    }
+    alertBox.setAttribute('data-show', '0');
+    try { localStorage.removeItem(DRAFT); } catch (err) { /* nothing to clear */ }
+  });
+
+  restore();
+  clampPair(null);
+  render();
+})();
+</script>
+<script>
+/* ── Funnel analytics (PostHog) ──────────────────────────────────────────
+   Inert until a publishable phc_* key is pasted below (same project as the
+   console; events land under client "buybox-funnel"). Captures the pageview,
+   each section's first completion, and the submit — enough to see where
+   prospects stall. No form VALUES are sent, only which sections are done. */
+(function(){
+  'use strict';
+  var KEY='';                        // paste the publishable phc_* key to enable
+  var HOST='https://us.i.posthog.com';
+  if(!/^phc_[A-Za-z0-9]+$/.test(KEY))return;
+  var s=document.createElement('script');
+  s.async=true;s.src=HOST+'/static/array.js';
+  s.onload=function(){
+    if(!window.posthog||!window.posthog.init)return;
+    posthog.init(KEY,{api_host:HOST,autocapture:false,capture_pageview:true,
+      disable_session_recording:true,respect_dnt:true,persistence:'localStorage'});
+    posthog.register({client:'buybox-funnel'});
+    var seen={};
+    // The section tallies already know when a section is first satisfied — watch
+    // them instead of the inputs, so no field values ever leave the page.
+    var TALLIES={ 't-you':'who', 't-mkt':'markets', 't-dirt':'dirt', 't-money':'money', 't-sig':'signals' };
+    setInterval(function(){
+      Object.keys(TALLIES).forEach(function(id){
+        var el=document.getElementById(id);
+        if(el&&!seen[id]&&getComputedStyle(el).color==='rgb(17, 17, 17)'){
+          seen[id]=1;posthog.capture('buybox_section_complete',{section:TALLIES[id]});
+        }
+      });
+    },1500);
+    var f=document.getElementById('bb');
+    f&&f.addEventListener('submit',function(){posthog.capture('buybox_submitted',{});});
+  };
+  document.head.appendChild(s);
+})();
+</script>
+
+</body>
+</html>

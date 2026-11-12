@@ -1,0 +1,395 @@
+<!doctype html>
+<!-- ─────────────────────────────────────────────────────────────────────────
+     SMS OPT-IN — the dedicated call-to-action page a 10DLC reviewer verifies.
+
+     THIS FILE EXISTS TWICE: www/sms-optin.html and landing/sms-optin.html, for
+     the same reason privacy.html does — www.urthmapper.com and the apex are
+     served by landing/ today, and a URL a carrier reviewer types has to resolve
+     on whichever site holds the hostname. The two copies are byte-identical and
+     must stay that way — edit one, copy it to the other.
+
+     WHY THIS PAGE EXISTS AT ALL. The campaign was rejected on 2026-08-27 with
+     "the carrier couldn't verify your opt-in flow on your website" — even though
+     §4 of /privacy contains a fully compliant CTA. The reviewer never found it:
+     it sits below three sections of legal text on a long document. The lesson is
+     that the CTA must be discoverable in one glance, not merely present. So this
+     page is nothing BUT the CTA: the form, the unchecked consent box with the
+     full disclosure beside it, and the program terms (sender, frequency, rates,
+     HELP, STOP, privacy link) above the fold. /sms-optin is the URL to put in
+     the campaign's opt-in/message-flow description and to screenshot for opt-in
+     evidence; /privacy remains the privacy-policy and SMS-terms URL.
+
+     The form posts to the SAME Netlify form ("sms-optin") as /privacy §4, so
+     consent records pool in one place whichever page someone used. The consent
+     wording is registered with the carrier (Quo — the campaign of record, see
+     docs/QUO_SMS_SETUP.md §"Campaign of record") — if it changes here it must
+     change in privacy.html §4, in that doc, and in the live Quo campaign record,
+     all together. The Telnyx drafts in docs/archive/ are NOT the carrier's copy. DO NOT pre-check the box or move the
+     disclosure away from it.
+     ───────────────────────────────────────────────────────────────────────── -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SMS Opt-In — Urthmapper</title>
+<meta name="description" content="Sign up for text messages from Urthmapper about land you own or land you want to buy. Message frequency varies, message and data rates may apply, reply STOP to opt out, HELP for help.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Urthmapper">
+<meta property="og:title" content="SMS Opt-In — Urthmapper">
+<meta property="og:description" content="Ask us to text you about land you own or land you want to buy. Reply STOP any time.">
+<meta property="og:url" content="https://www.urthmapper.com/sms-optin">
+<meta property="og:image" content="https://urthmapper.com/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://urthmapper.com/og-card.jpg">
+<meta name="theme-color" content="#DCDACE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B0E0A" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://www.urthmapper.com/sms-optin">
+<link rel="preload" href="/fonts/Origin-RegularText.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Origin-BlackDisplay.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-LightText.woff2') format('woff2');
+  font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-RegularText.woff2') format('woff2');
+  font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-MediumText.woff2') format('woff2');
+  font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-SemiBoldText.woff2') format('woff2');
+  font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-BoldText.woff2') format('woff2');
+  font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Display';src:url('/fonts/Origin-BoldDisplay.woff2') format('woff2');
+  font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Display';src:url('/fonts/Origin-ExtraBoldDisplay.woff2') format('woff2');
+  font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Display';src:url('/fonts/Origin-BlackDisplay.woff2') format('woff2');
+  font-weight:900;font-style:normal;font-display:swap}
+
+/* Tokens are privacy.html's, copied rather than imported — static folders, no
+   build step. See docs/BRAND.md. */
+:root{
+  --ground:#DCDACE; --sheet:#EFEDE3; --inset:#D2D0C2;
+  --ink:#10130E; --ink-2:#474B3F; --ink-3:#7C8072;
+  --line:#B4B3A2; --line-2:#9A9987;
+  --flag:#E8501E; --flag-ink:#FFFFFF; --hydro:#1F5F6B; --veg:#6E7F22;
+  --flag-wash:#F5DCD2; --veg-wash:#E3E7CD;
+  --disp:'Origin Display','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --body:'Origin Text','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --gut:clamp(18px,4vw,34px);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --ground:#0B0E0A; --sheet:#13170F; --inset:#191D13;
+    --ink:#E9E7D8; --ink-2:#A2A593; --ink-3:#72766A;
+    --line:#2E3326; --line-2:#414736;
+    --flag:#FF6A35; --flag-ink:#12160F; --hydro:#4FB3BF; --veg:#AFC24A;
+    --flag-wash:#24130C; --veg-wash:#1A1F0C;
+  }
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);
+  font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+a{color:inherit}
+::selection{background:var(--flag);color:var(--flag-ink)}
+:focus-visible{outline:2px solid var(--flag);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+.mono{font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3)}
+.wrap{width:100%;max-width:1200px;margin:0 auto;padding:0 var(--gut)}
+
+/* ---------- nav: the marketing standard — near-black, logo bare on it ------- */
+.topnav{position:fixed;inset:0 0 auto;z-index:900;display:flex;align-items:center;
+  gap:26px;padding:11px clamp(14px,3vw,30px);
+  background:#0a0b09;border-bottom:1px solid rgba(255,255,255,.08)}
+.plate{display:inline-flex;align-items:center;text-decoration:none;flex:none;padding:4px 0}
+.plate img{height:22px;width:auto}
+.navlinks{display:flex;align-items:center;gap:24px;margin-left:auto}
+.navlinks a.nl{font-family:var(--disp);font-size:11.5px;font-weight:800;letter-spacing:.04em;
+  text-transform:uppercase;color:#FF6A35;text-decoration:none;transition:color .15s}
+.navlinks a.nl:hover{color:#fff}
+.signin{font-family:var(--disp);font-size:11.5px;font-weight:800;letter-spacing:.04em;
+  text-transform:uppercase;text-decoration:none;color:#FF6A35;
+  border:1px solid #FF6A35;padding:9px 13px;transition:border-color .15s,color .15s,background .15s}
+.signin:hover{background:#FF6A35;color:#0a0b09}
+.burger{display:none;margin-left:auto;background:none;border:0;padding:8px;cursor:pointer}
+.burger span{display:block;width:21px;height:2px;background:#FF6A35;margin:4px 0}
+@media(max-width:860px){
+  .burger{display:block}
+  .navlinks{position:fixed;inset:57px 0 auto;flex-direction:column;align-items:stretch;
+    gap:0;padding:12px clamp(14px,3vw,30px) 22px;background:#0a0b09;
+    border-bottom:1px solid rgba(255,255,255,.08);display:none}
+  body.menu-open .navlinks{display:flex}
+  .navlinks a.nl{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:12px}
+  .signin{margin-top:16px;text-align:center}
+}
+
+/* ---------- hero: deliberately compact so the CTA sits above the fold ------- */
+.hero{padding:calc(57px + clamp(26px,4vw,44px)) 0 clamp(20px,3vw,30px);
+  border-bottom:2px solid var(--ink)}
+.hero h1{margin-top:12px;font-family:var(--disp);font-weight:800;
+  font-size:clamp(28px,4.4vw,46px);line-height:1.02;letter-spacing:-.012em;
+  text-transform:uppercase;text-wrap:balance;max-width:22ch}
+.hero .lede{margin-top:14px;max-width:62ch;font-size:clamp(15.5px,1.6vw,17.5px);
+  color:var(--ink-2);text-wrap:pretty}
+
+/* ---------- two columns: program terms beside the form -------------------- */
+.duo{display:grid;grid-template-columns:1fr;gap:8px 52px;
+  padding:clamp(22px,3.5vw,36px) 0 clamp(56px,8vw,90px)}
+@media(min-width:1000px){.duo{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:start}}
+.duo h2{font-family:var(--disp);font-weight:800;font-size:clamp(19px,2.2vw,24px);
+  letter-spacing:-.02em;line-height:1.16}
+.duo .col p{margin-top:12px;color:var(--ink-2);max-width:62ch;text-wrap:pretty}
+.duo a{color:var(--hydro);text-underline-offset:2px}
+.duo a:hover{color:var(--flag)}
+
+/* Definition rows — the messaging program at a glance, same shape as /privacy
+   §3.1 so the two pages visibly describe one program. */
+.spec{margin-top:16px;border-top:1px solid var(--line)}
+.spec > div{display:grid;grid-template-columns:1fr;gap:2px 24px;padding:10px 0;
+  border-bottom:1px solid var(--line)}
+@media(min-width:620px){.spec > div{grid-template-columns:168px minmax(0,1fr)}}
+.spec dt{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-3);padding-top:4px}
+.spec dd{color:var(--ink-2);font-size:15px;overflow-wrap:anywhere}
+.spec dd b{color:var(--ink);font-weight:600}
+
+/* ---------- form ---------- */
+.form-card{margin-top:22px;border:1px solid var(--line);background:var(--sheet)}
+@media(min-width:1000px){.form-card{margin-top:0}}
+.form-card > .hd{padding:15px 20px;border-bottom:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;justify-content:space-between}
+.form-card > .hd h2{font-family:var(--disp);font-weight:700;font-size:16px;letter-spacing:-.014em}
+.form-card > .bd{padding:20px}
+.field{display:flex;flex-direction:column;gap:7px;min-width:0;margin-top:16px}
+.field:first-child{margin-top:0}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.pair .field{margin-top:0}
+@media(max-width:620px){.pair{grid-template-columns:1fr}}
+label.lbl{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3)}
+input[type=text],input[type=tel],select{
+  width:100%;background:var(--inset);border:1px solid var(--line-2);border-radius:0;
+  color:var(--ink);font-family:inherit;font-size:15px;padding:11px 12px;outline:none;
+  transition:border-color .13s,background .13s}
+input::placeholder{color:var(--ink-3)}
+input[type=text]:hover,input[type=tel]:hover,select:hover{border-color:var(--ink-3)}
+input[type=text]:focus,input[type=tel]:focus,select:focus{
+  border-color:var(--ink);background:var(--sheet)}
+select{appearance:none;cursor:pointer;padding-right:34px;
+  background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);
+  background-position:calc(100% - 17px) 53%,calc(100% - 12px) 53%;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+
+/* The consent box. It ships UNCHECKED and the whole disclosure sits inside its
+   own label, because that pairing is the evidence — see the header comment. */
+.consent{display:flex;align-items:flex-start;gap:13px;margin-top:22px;padding:16px;
+  border:1.5px solid var(--line-2);background:var(--ground);cursor:pointer;
+  transition:border-color .13s,background .13s}
+.consent:hover{border-color:var(--ink-3)}
+.consent:has(input:checked){border-color:var(--veg);background:var(--veg-wash)}
+.consent input{appearance:none;flex:none;width:19px;height:19px;margin-top:2px;
+  border:1.5px solid var(--line-2);background:var(--sheet);cursor:pointer;position:relative;
+  transition:border-color .13s,background .13s}
+.consent input:checked{background:var(--veg);border-color:var(--veg)}
+.consent input:checked::after{content:'';position:absolute;left:6px;top:1.5px;width:4px;height:10px;
+  border:solid #fff;border-width:0 2px 2px 0;transform:rotate(43deg)}
+.consent span{font-size:14px;line-height:1.55;color:var(--ink-2)}
+.consent b{color:var(--ink);font-weight:600}
+.consent a{color:var(--hydro)}
+
+.send{width:100%;margin-top:20px;border:none;border-radius:0;cursor:pointer;padding:15px 22px;
+  background:var(--flag);color:var(--flag-ink);font-family:var(--disp);font-size:13px;
+  font-weight:800;letter-spacing:.05em;text-transform:uppercase;transition:background .13s}
+.send:hover{background:var(--ink);color:var(--ground)}
+.fine{margin-top:11px;font-size:12.5px;color:var(--ink-3);text-align:center;text-wrap:pretty}
+.hp{position:absolute;left:-9999px;opacity:0}
+
+/* ---------- footer ---------- */
+footer{border-top:2px solid var(--ink);padding:clamp(30px,4.5vw,48px) 0 30px;background:var(--ground)}
+.footrow{display:flex;flex-wrap:wrap;gap:10px 30px;justify-content:space-between;
+  font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--ink-3)}
+.footrow a{color:var(--ink-3);text-decoration:none}
+.footrow a:hover{color:var(--flag)}
+.backhome{display:inline-block;margin-bottom:22px;font-size:14px;color:var(--ink);
+  text-decoration:none}
+.backhome:hover{color:var(--flag)}
+</style>
+</head>
+<body>
+
+<nav class="topnav" aria-label="Main">
+  <a class="plate" href="/wholesalers"><img src="/assets/logo.png" alt="Urthmapper" width="120" height="22"></a>
+  <button class="burger" id="nav-burger" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="navlinks" id="navlinks">
+    <a class="nl" href="/sms">SMS terms</a>
+    <a class="nl" href="/privacy">Privacy policy</a>
+    <a class="nl" href="/wholesalers">Home</a>
+    <a class="signin" href="https://login.urthmapper.com">Client sign in</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="mono">SMS opt-in &middot; Urthmapper LLC</p>
+    <h1>Ask us to text you</h1>
+    <p class="lede">Use this form if you would like Urthmapper to text you &mdash; because
+      you own land you might sell, or because you buy land and want to hear about it by
+      text. Signing up is optional, it is never a condition of anything, and one word
+      &mdash; <b>STOP</b> &mdash; ends it at any time.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="duo">
+
+    <div class="col">
+      <h2>The program, in plain terms</h2>
+      <p>Everything below is also in our <a href="/sms">SMS terms</a> and
+        <a href="/privacy">privacy policy</a> &mdash; this is the short version, next to
+        the form it applies to.</p>
+      <dl class="spec">
+        <div><dt>Who sends</dt><dd><b>Urthmapper</b> &mdash; every message identifies Urthmapper as the sender</dd></div>
+        <div><dt>What about</dt><dd>Land you own or land you are looking to buy, and the conversation that follows if you reply</dd></div>
+        <div><dt>Message frequency</dt><dd><b>Message frequency varies</b> &mdash; typically fewer than 5 messages per month</dd></div>
+        <div><dt>Cost</dt><dd><b>Message and data rates may apply.</b> We charge nothing; your carrier may</dd></div>
+        <div><dt>Sending hours</dt><dd>8:00am&ndash;8:00pm in your local time, never outside it</dd></div>
+        <div><dt>Opt out</dt><dd>Reply <b>STOP</b> to any message to unsubscribe &mdash; it is honored automatically and permanently</dd></div>
+        <div><dt>Help</dt><dd>Reply <b>HELP</b> to any message, or call <a href="tel:+18033874507">(803) 387-4507</a></dd></div>
+        <div><dt>Privacy</dt><dd>No mobile information is shared with third parties or affiliates for marketing or promotional purposes &mdash; see the <a href="/privacy">privacy policy</a></dd></div>
+      </dl>
+    </div>
+
+    <div class="col">
+      <form action='/privacy-thanks.html?k=contact' class='form-card' id='optin' method='POST' name='sms-optin'>
+        <div class="hd">
+          <h2>Text me at this number</h2>
+          <span class="mono">Optional &middot; opt out any time</span>
+        </div>
+        <div class="bd">
+          <input type="hidden" name="form-name" value="sms-optin">
+          <p class="hp"><label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+
+          <!-- The consent record. A tick alone proves nothing a year later; the exact
+               wording shown, the page, and the moment are what answer "prove they
+               agreed". The wording below must stay identical to the label's, and to
+               privacy.html §4's. -->
+          <input type="hidden" name="consent_language" value="I agree to receive text messages from Urthmapper at the mobile number I have provided, about land I own or land I am looking to buy. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. Consent is not a condition of any purchase, and ticking this box is optional - submit without it and we will reply by email or phone instead, and no texts will be sent.">
+          <input type="hidden" name="consent_page" id="oi-page" value="https://www.urthmapper.com/sms-optin">
+          <input type="hidden" name="consent_timestamp" id="oi-time" value="">
+          <input type="hidden" name="consent_user_agent" id="oi-ua" value="">
+
+          <!-- Netlify keeps ONE field list per form name, taken from whichever page it
+               parses last. privacy.html §4 posts to this same "sms-optin" form with
+               email/property/notes too; without these inert copies, a deploy that
+               parses this page last would silently drop those fields from every
+               /privacy submission. Keep the two forms' field NAMES identical. -->
+          <input type="hidden" name="email" value="">
+          <input type="hidden" name="property" value="">
+          <input type="hidden" name="notes" value="">
+
+          <div class="pair">
+            <div class="field">
+              <label class="lbl" for="oi-name">Your name</label>
+              <input id="oi-name" name="name" type="text" required autocomplete="name" placeholder="Jordan Reyes">
+            </div>
+            <div class="field">
+              <label class="lbl" for="oi-phone">Mobile number</label>
+              <input id="oi-phone" name="mobile_number" type="tel" required autocomplete="tel"
+                     inputmode="tel" placeholder="(555) 010-2288">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="lbl" for="oi-role">This is about</label>
+            <select id="oi-role" name="relationship" required>
+              <option value="">Choose one&hellip;</option>
+              <option value="owner">Land I own</option>
+              <option value="buyer">Land I want to buy</option>
+              <option value="client">My Urthmapper client account</option>
+              <option value="other">Something else</option>
+            </select>
+          </div>
+
+          <label class="consent" for="oi-consent">
+            <input id="oi-consent" name="sms_consent" type="checkbox" value="yes">
+            <span><b>I agree to receive text messages from Urthmapper</b> at the mobile
+              number I have provided, about land I own or land I am looking to buy.
+              Message frequency varies. <b>Message and data rates may apply.</b>
+              Reply <b>STOP</b> to opt out, <b>HELP</b> for help. Consent is not a
+              condition of any purchase, <b>and ticking this box is optional</b> &mdash;
+              submit without it and we will reply by email or phone instead, and no
+              texts will be sent. See the <a href="/sms">SMS terms</a> and the
+              <a href="/privacy">privacy policy</a>.</span>
+          </label>
+
+          <button class="send" type="submit">Send my details</button>
+          <p class="fine">Texts only if you ticked the box &middot; we never share your
+            number &middot; never outside 8am&ndash;8pm your time.</p>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a class="backhome" href="/wholesalers">&larr; Back to urthmapper.com</a>
+    <div class="footrow">
+      <span>&copy; 2026 Urthmapper LLC &middot; 30 N Gould St Ste R, Sheridan, WY 82801</span>
+      <span><a href="/sms">SMS terms</a> &middot; <a href="/privacy">Privacy policy</a></span>
+      <span><a href="mailto:ethan@urthmapper.com">ethan@urthmapper.com</a> &middot; <a href="tel:+18033874507">(803) 387-4507</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── mobile nav ────────────────────────────────────────────────────────── */
+(function(){
+  var b=document.getElementById('nav-burger');
+  if(!b) return;
+  b.addEventListener('click',function(){
+    var open=document.body.classList.toggle('menu-open');
+    b.setAttribute('aria-expanded',open?'true':'false');
+  });
+  document.querySelectorAll('#navlinks a').forEach(function(a){
+    a.addEventListener('click',function(){
+      document.body.classList.remove('menu-open');
+      b.setAttribute('aria-expanded','false');
+    });
+  });
+})();
+
+/* ── consent record ────────────────────────────────────────────────────────
+   Stamp the moment, the page and the browser onto the opt-in submission —
+   same reasoning as privacy.html §4. Progressive enhancement only: with JS off
+   the form still posts and the hard-coded consent language still goes. */
+(function(){
+  var f=document.getElementById('optin');
+  if(!f) return;
+  var t=document.getElementById('oi-time'),
+      u=document.getElementById('oi-ua'),
+      p=document.getElementById('oi-page');
+  var box=document.getElementById('oi-consent');
+  f.addEventListener('submit',function(){
+    if(t) t.value=new Date().toISOString();
+    if(u) u.value=navigator.userAgent.slice(0,300);
+    if(p) p.value=location.href;
+    // Confirmation must match reality: opt-in outcome only when the (optional)
+    // box is ticked; the static action is the fail-safe contact outcome.
+    f.action='/privacy-thanks.html?k='+(box&&box.checked?'optin':'contact');
+  });
+})();
+</script>
+
+</body>
+</html>
