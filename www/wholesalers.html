@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Urthmapper for land investors &amp; wholesalers — every parcel in your buy box, sold once</title>
+<meta name="description" content="We pull your counties' own parcel rolls, run your screens before you ever see a lead, and skip-trace what survives. Every lead is sold once, to one buyer, forever.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Urthmapper">
+<meta property="og:title" content="Urthmapper — every parcel in your buy box, sold once">
+<meta property="og:description" content="Screened against your buy box, skip-traced, and on a map. Every lead sold once, to one buyer, forever.">
+<meta property="og:url" content="https://urthmapper.com/wholesalers">
+<meta property="og:image" content="/assets/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/assets/og-card.jpg">
+<meta name="theme-color" content="#DCDACE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B0E0A" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/fonts/Origin-RegularText.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Origin-BlackDisplay.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-LightText.woff2') format('woff2');
+  font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-RegularText.woff2') format('woff2');
+  font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-MediumText.woff2') format('woff2');
+  font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-SemiBoldText.woff2') format('woff2');
+  font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Text';src:url('/fonts/Origin-BoldText.woff2') format('woff2');
+  font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Display';src:url('/fonts/Origin-BoldDisplay.woff2') format('woff2');
+  font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Display';src:url('/fonts/Origin-ExtraBoldDisplay.woff2') format('woff2');
+  font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'Origin Display';src:url('/fonts/Origin-BlackDisplay.woff2') format('woff2');
+  font-weight:900;font-style:normal;font-display:swap}
+
+/* ── Urthmapper · "Section & Range" ────────────────────────────────────────
+   The look is lifted from the documents this product is actually made of —
+   the plat sheet, the county soil survey, the FEMA flood panel, the PLSS
+   section grid. Those are papers a land buyer already trusts; a generic dark
+   SaaS gradient is not. Full rationale in docs/HOMEPAGE_WIREFRAME.md §4.
+
+   Three faces, three jobs. All SIL OFL, self-hosted latin subsets pulled from
+   Google Fonts so the page makes no third-party request:
+     Origin (freeware, © Rajesh Rajput — see FONT-LICENSE.txt) is the whole
+       voice: one family in two optical sizes. 'Origin Display' carries the
+       headings at 700-900 (where the variable wdth+wght flexing used to be);
+       'Origin Text' carries prose at Regular 400 and data/labels at 600-700
+       with wide tracking. The files are the foundry's own web builds —
+       the EULA forbids converting or renaming them.
+   ──────────────────────────────────────────────────────────────────────── */
+
+/* Paper by day. The dark palette is not an inversion — it is the same sheet on
+   a lit drafting table, where --flag brightens to hold its signal value. */
+:root{
+  --ground:#DCDACE; --sheet:#EFEDE3; --inset:#D2D0C2;
+  --ink:#10130E; --ink-2:#474B3F; --ink-3:#7C8072;
+  --line:#B4B3A2; --line-2:#9A9987;
+  --flag:#E8501E; --flag-ink:#FFFFFF; --hydro:#1F5F6B; --veg:#6E7F22;
+  --flag-wash:#F5DCD2; --veg-wash:#E3E7CD;
+  --dark:#0B0E0A;                    /* the video inserts' own ground */
+  --disp:'Origin Display','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --body:'Origin Text','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --mono:'Origin Text','Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --ground:#0B0E0A; --sheet:#13170F; --inset:#191D13;
+    --ink:#E9E7D8; --ink-2:#A2A593; --ink-3:#72766A;
+    --line:#2E3326; --line-2:#414736;
+    --flag:#FF6A35; --flag-ink:#12160F; --hydro:#4FB3BF; --veg:#AFC24A;
+    --flag-wash:#24130C; --veg-wash:#1A1F0C;
+  }
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+img,video,canvas{display:block;max-width:100%;height:auto}
+::selection{background:var(--flag);color:var(--flag-ink)}
+:focus-visible{outline:2px solid var(--flag);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Corners are square because plats have square corners. The only radius on the
+   page is the browser chrome around the console screenshots. */
+.mono{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3)}
+.wrap{width:100%;max-width:1200px;margin:0 auto;padding:0 clamp(18px,4vw,34px)}
+.prose{max-width:62ch}
+
+/* DEVICE 01 — the section grid. PLSS: light rules every parcel, heavy every
+   sixth line where a section boundary falls. Content aligns to it. */
+.gridsub{background-image:
+  repeating-linear-gradient(0deg,transparent 0 47px,var(--line) 47px 48px),
+  repeating-linear-gradient(90deg,transparent 0 47px,var(--line) 47px 48px);
+  background-position:center}
+/* DEVICE 03 — floodway hatch. On a FEMA panel it means you cannot build here;
+   on this page it means ground that is screened out or already gone. */
+.hatch{background-image:repeating-linear-gradient(45deg,transparent 0 6px,
+  color-mix(in srgb,var(--flag) 30%,transparent) 6px 7px)}
+
+/* ---------- nav ---------- */
+.topnav{position:fixed;inset:0 0 auto;z-index:900;display:flex;align-items:center;
+  gap:26px;padding:11px clamp(14px,3vw,30px);
+  background:#0a0b09;border-bottom:1px solid rgba(255,255,255,.08)}
+.plate{display:inline-flex;align-items:center;text-decoration:none;flex:none;padding:4px 0}
+.plate img{height:22px;width:auto}
+.navlinks{display:flex;align-items:center;gap:24px;margin-left:auto}
+.navlinks a.nl{font-family:var(--disp);font-size:11.5px;font-weight:800;letter-spacing:.04em;
+  text-transform:uppercase;color:#FF6A35;text-decoration:none;transition:color .15s}
+.navlinks a.nl:hover{color:#fff}
+.signin{font-family:var(--disp);font-size:11.5px;font-weight:800;letter-spacing:.04em;
+  text-transform:uppercase;text-decoration:none;color:#FF6A35;
+  border:1px solid #FF6A35;padding:9px 13px;transition:border-color .15s,color .15s,background .15s}
+.signin:hover{background:#FF6A35;color:#0a0b09}
+.burger{display:none;background:none;border:1px solid rgba(255,255,255,.3);cursor:pointer;
+  padding:9px;margin-left:auto}
+.burger span{display:block;width:20px;height:2px;background:#FF6A35;margin:4px 0;
+  transition:transform .22s,opacity .22s}
+body.menu-open .burger span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+body.menu-open .burger span:nth-child(2){opacity:0}
+body.menu-open .burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+@media(max-width:860px){
+  .burger{display:block}
+  .navlinks{position:fixed;inset:57px 0 auto;flex-direction:column;align-items:stretch;
+    gap:0;background:#0a0b09;border-bottom:1px solid rgba(255,255,255,.08);
+    padding:6px clamp(14px,3vw,30px) 18px;margin:0;display:none}
+  body.menu-open .navlinks{display:flex}
+  .navlinks a.nl{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:12px}
+  .signin{margin-top:16px;text-align:center}
+}
+
+/* ---------- bands ---------- */
+.band{position:relative;padding:clamp(64px,9vh,104px) 0;border-top:1px solid var(--line)}
+.band.sheet{background:var(--sheet)}
+.band-hd{margin-bottom:clamp(30px,5vw,52px)}
+/* DEVICE 02 — the boxed section number, the way a section is numbered on a plat.
+   The blocks genuinely are an ordered sequence, so the numbering means something. */
+.secno{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ink);
+  border:2px solid var(--ink);width:32px;height:32px;display:grid;place-items:center;
+  margin-bottom:16px}
+h2.hd{font-family:var(--disp);font-weight:800;
+  font-size:clamp(30px,5.2vw,58px);line-height:1;letter-spacing:-.022em;
+  text-wrap:balance;max-width:19ch}
+.hd-sub{margin-top:16px;color:var(--ink-2);font-size:19px;max-width:58ch}
+
+/* ---------- 01 hero ---------- */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;
+  justify-content:center;padding:110px 0 74px;overflow:hidden;border-top:0;
+  background:#37b6bd url('/assets/hero-farm.jpg') center 62%/cover no-repeat}
+.hero .wrap{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center}
+.hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(72% 60% at 50% 46%,color-mix(in srgb,var(--ground) 78%,transparent) 0%,
+      color-mix(in srgb,var(--ground) 52%,transparent) 55%,transparent 80%),
+    linear-gradient(180deg,color-mix(in srgb,var(--ground) 55%,transparent) 0%,
+      transparent 24%,transparent 80%,var(--ground) 100%)}
+.svc{display:flex;flex-wrap:wrap;gap:6px 28px;margin-bottom:26px;justify-content:center}
+.svc span{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-2);display:flex;align-items:center;gap:8px}
+.svc span::before{content:'';width:7px;height:7px;background:var(--flag);flex:none}
+h1{font-family:var(--disp);font-weight:800;text-transform:uppercase;
+  font-size:clamp(36px,7.6vw,96px);line-height:.96;letter-spacing:-.012em;
+  text-wrap:balance;max-width:15ch}
+.hero .lede{margin-top:24px;font-size:clamp(17px,2vw,21px);font-weight:600;color:var(--ink);max-width:54ch}
+.hero .svc span{color:var(--ink)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px;justify-content:center}
+/* --flag is the page's only saturated colour. It marks the action and the few
+   places the eye is meant to land — the grade chip, the refusal count, the
+   leads still open. Everything else is mineral, which is what keeps it loud. */
+.btn{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;text-decoration:none;padding:16px 26px;display:inline-block;
+  background:var(--flag);color:var(--flag-ink);border:2px solid var(--flag);
+  transition:background .15s,color .15s}
+.btn:hover{background:transparent;color:var(--flag)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+.btn.ghost:hover{border-color:var(--ink);color:var(--ink)}
+.scrollcue{position:absolute;left:0;right:0;bottom:26px;z-index:2;text-align:center}
+
+/* ---------- 02 proof bar ---------- */
+.proof{border-top:2px solid var(--ink);border-bottom:1px solid var(--line);
+  background:var(--sheet);padding:22px 0}
+.proof .wrap{display:flex;flex-wrap:wrap;gap:14px 46px;align-items:baseline;
+  justify-content:center;text-align:center}
+.proof .stat{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3);display:flex;align-items:baseline;gap:9px}
+.proof .stat b{font-family:var(--disp);font-weight:800;
+  font-size:30px;color:var(--ink);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+
+/* ---------- 03 problem ---------- */
+.problem p{font-size:clamp(19px,2.5vw,27px);line-height:1.42;max-width:22ch;color:var(--ink-2)}
+.problem .land{font-family:var(--disp);font-weight:700;
+  font-size:clamp(23px,3.4vw,40px);line-height:1.1;color:var(--ink);letter-spacing:-.02em;
+  max-width:17ch;margin-top:26px}
+.problem-grid{display:grid;gap:30px}
+@media(min-width:900px){.problem-grid{grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+  .problem p,.problem .land{max-width:none}}
+
+/* ---------- 04 console ---------- */
+.shots{display:grid;gap:26px}
+@media(min-width:980px){.shots{grid-template-columns:1.35fr .65fr;align-items:start}}
+.browser{border:1px solid var(--line-2);background:var(--sheet);overflow:hidden;border-radius:6px}
+.bar{display:flex;align-items:center;gap:6px;padding:9px 12px;border-bottom:1px solid var(--line)}
+.bar i{width:8px;height:8px;border-radius:50%;background:var(--line-2)}
+.bar span{margin-left:10px;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.notes{display:flex;flex-direction:column;gap:22px}
+.note{border-left:2px solid var(--line-2);padding-left:16px}
+.note h3{font-family:var(--disp);font-weight:700;font-size:17px;
+  margin-bottom:5px;display:flex;gap:10px;align-items:baseline}
+.note h3 em{font-family:var(--mono);font-size:11px;font-style:normal;color:var(--flag);font-weight:600}
+.note p{font-size:15.5px;color:var(--ink-2)}
+.shots-b{margin-top:26px;display:grid;gap:26px}
+@media(min-width:980px){.shots-b{grid-template-columns:.65fr 1.35fr;align-items:center}}
+
+/* ---------- 05 anatomy of one lead ---------- */
+.anat{display:grid;gap:26px}
+@media(min-width:1000px){.anat{grid-template-columns:1fr auto 1fr;gap:30px;align-items:center}}
+.callouts{display:flex;flex-direction:column;gap:26px}
+.callout{border-left:2px solid var(--line-2);padding-left:15px}
+.callout h4{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink);margin-bottom:6px}
+.callout p{font-size:15px;color:var(--ink-2)}
+@media(min-width:1000px){.callouts.right .callout{border-left:0;border-right:2px solid var(--line-2);
+  padding:0 15px 0 0;text-align:right}}
+.leadcard{border:2px solid var(--ink);background:var(--sheet);padding:20px;min-width:0}
+.leadcard .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.leadcard .acr{font-family:var(--disp);font-weight:800;
+  font-size:26px;letter-spacing:-.02em}
+.leadcard .grade{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;
+  background:var(--flag);color:var(--flag-ink);padding:4px 8px}
+.leadcard .where{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);
+  letter-spacing:.06em;margin-top:3px}
+.leadcard dl{margin-top:16px;border-top:1px solid var(--line)}
+.leadcard .row{display:flex;justify-content:space-between;gap:14px;padding:8px 0;
+  border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px}
+.leadcard dt{color:var(--ink-3);letter-spacing:.06em}
+.leadcard dd{color:var(--ink);font-weight:600;text-align:right}
+.leadcard dd.pass{color:var(--veg)}
+.basis{margin-top:22px;border:2px solid var(--flag);background:var(--flag-wash);padding:16px 18px}
+.basis p{font-size:15.5px;color:var(--ink-2)}
+.basis b{color:var(--ink)}
+
+/* ---------- 06 sold once ---------- */
+.sold{display:grid;gap:30px}
+@media(min-width:900px){.sold{grid-template-columns:auto 1fr;gap:52px;align-items:center}}
+.pins{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:7px;max-width:420px}
+.pin{aspect-ratio:1;background-color:var(--inset);border:1px solid var(--line-2)}
+.pin.open{background-color:var(--flag);border-color:var(--flag)}
+.pinkey{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:16px}
+.pinkey span{font-family:var(--mono);font-size:11px;letter-spacing:.09em;color:var(--ink-3);
+  display:flex;align-items:center;gap:8px}
+.pinkey i{width:12px;height:12px;display:block;border:1px solid var(--line-2);background-color:var(--inset)}
+.pinkey i.open{background-color:var(--flag);border-color:var(--flag)}
+
+/* ---------- 07 fourteen ---------- */
+.fourteen{display:grid;gap:26px}
+@media(min-width:900px){.fourteen{grid-template-columns:auto 1fr;gap:56px;align-items:center}}
+.bignum{font-family:var(--disp);font-weight:900;
+  font-size:clamp(84px,17vw,190px);line-height:.8;letter-spacing:-.05em;color:var(--flag)}
+.bignum small{display:block;font-family:var(--mono);font-size:12px;font-weight:600;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);margin-top:12px;
+  letter-spacing:.15em}
+.fourteen .kicker{font-family:var(--disp);font-weight:700;
+  font-size:clamp(20px,2.6vw,29px);line-height:1.16;margin-top:20px;letter-spacing:-.018em}
+
+/* ---------- video bands ---------- */
+.vband{position:relative;height:clamp(220px,34vh,360px);overflow:hidden;background:var(--dark);
+  border-top:1px solid var(--line)}
+.vband video{width:100%;height:100%;object-fit:cover;opacity:.82}
+.vband .cap{position:absolute;inset:auto 0 0;padding:20px clamp(18px,4vw,34px);
+  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:#E9E7D8;
+  background:linear-gradient(transparent,rgba(11,14,10,.85))}
+
+/* ---------- 08 how ---------- */
+.steps{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+@media(min-width:820px){.steps{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.step{background:var(--ground);padding:26px 22px}
+.band.sheet .step{background:var(--sheet)}
+.step .n{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:14px}
+.step .n b{font-family:var(--disp);font-weight:800;font-size:34px;
+  line-height:1;letter-spacing:-.03em}
+.step .n em{font-family:var(--mono);font-size:10.5px;font-style:normal;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--flag)}
+.step h3{font-family:var(--disp);font-weight:700;font-size:19px;
+  margin-bottom:9px;line-height:1.16}
+.step p{font-size:15.5px;color:var(--ink-2)}
+.marketstrip{margin-top:30px;border-top:1px solid var(--line);padding-top:22px;text-align:center}
+.marketstrip .counties{font-family:var(--mono);font-size:12px;letter-spacing:.1em;
+  color:var(--ink-2);line-height:2}
+.marketstrip .claim{margin-top:10px;font-family:var(--disp);
+  font-weight:700;font-size:17px}
+
+/* ---------- 09 pricing ---------- */
+.plans{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+@media(min-width:900px){.plans{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.plan{background:var(--ground);padding:26px 22px;display:flex;flex-direction:column;gap:16px}
+.band.sheet .plan{background:var(--sheet)}
+.plan.hot{outline:2px solid var(--flag);outline-offset:-2px;position:relative;z-index:1}
+.plan .pname{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);display:flex;justify-content:space-between;gap:10px}
+.plan.hot .pname{color:var(--flag)}
+.plan .price{font-family:var(--disp);font-weight:800;
+  font-size:46px;line-height:.94;letter-spacing:-.035em}
+.plan .price small{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.08em;
+  color:var(--ink-3);margin-left:5px}
+.plan ul{list-style:none;display:flex;flex-direction:column;gap:9px;font-size:15px;
+  color:var(--ink-2);flex:1}
+.plan li{display:flex;gap:10px}
+.plan li::before{content:'';width:8px;height:8px;background:var(--veg);flex:none;margin-top:8px}
+.plan .btn{text-align:center}
+.plan.ghosted .btn{background:transparent;color:var(--ink);border-color:var(--line-2)}
+.plan.ghosted .btn:hover{border-color:var(--ink)}
+.pricenote{margin-top:24px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;
+  color:var(--ink-3);line-height:2;text-align:center}
+.guarantees{margin-top:24px;display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+@media(min-width:760px){.guarantees{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.gtee{background:var(--ground);padding:16px 18px}
+.band.sheet .gtee{background:var(--sheet)}
+.gtee b{display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--flag);margin-bottom:5px}
+.gtee span{font-size:14.5px;color:var(--ink-2)}
+.included{margin-top:24px;border:1px solid var(--line);padding:20px}
+.included h4{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
+.included ul{list-style:none;display:grid;gap:7px 26px;font-size:14.5px;color:var(--ink-2);
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.included li::before{content:'✓';color:var(--veg);margin-right:9px;font-weight:700}
+
+/* ---------- 10 faq / founder / footer ---------- */
+.faq{border-top:2px solid var(--ink)}
+.qa{border-bottom:1px solid var(--line)}
+.qa summary{list-style:none;cursor:pointer;padding:20px 40px 20px 0;position:relative;
+  font-family:var(--disp);font-weight:700;font-size:18px;
+  line-height:1.3}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::after{content:'+';position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:20px;color:var(--flag);font-weight:400}
+.qa[open] summary::after{content:'–'}
+.qa summary:hover{color:var(--flag)}
+.qa .a{padding:0 0 22px;color:var(--ink-2);font-size:16px;max-width:66ch}
+.founder{border:1px solid var(--line);background:var(--sheet);padding:clamp(24px,4vw,40px);
+  display:grid;gap:24px}
+@media(min-width:820px){.founder{grid-template-columns:1.4fr .6fr;gap:44px;align-items:end}}
+.founder blockquote{font-family:var(--disp);font-weight:500;
+  font-size:clamp(19px,2.4vw,27px);line-height:1.28;letter-spacing:-.018em;text-wrap:pretty}
+.founder .who{font-family:var(--mono);font-size:12px;line-height:1.9;color:var(--ink-3);
+  letter-spacing:.05em}
+.founder .who b{display:block;color:var(--ink);font-size:13px;letter-spacing:.1em;
+  text-transform:uppercase}
+.founder .who a{color:var(--hydro)}
+footer{border-top:2px solid var(--ink);padding:clamp(48px,7vw,84px) 0 40px;background:var(--ground)}
+.footmega{font-family:var(--disp);font-weight:900;
+  font-size:clamp(48px,13vw,168px);line-height:.86;letter-spacing:-.045em;color:var(--ink)}
+.footcta{margin-top:30px;display:flex;flex-wrap:wrap;gap:16px 30px;align-items:center}
+.footrow{margin-top:46px;padding-top:22px;border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:10px 30px;justify-content:space-between;
+  font-family:var(--mono);font-size:11px;letter-spacing:.09em;color:var(--ink-3)}
+.footrow a{color:var(--ink-3)}
+
+/* ---------- reveal ---------- */
+.reveal{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<nav class="topnav" aria-label="Main">
+  <a class="plate" href="#top"><img src="/assets/logo.png" alt="Urthmapper" width="120" height="22"></a>
+  <button class="burger" id="nav-burger" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="navlinks" id="navlinks">
+    <a class="nl" href="#console">Console</a>
+    <a class="nl" href="#lead">What a lead is</a>
+    <a class="nl" href="#how">How it works</a>
+    <a class="nl" href="#pricing">Pricing</a>
+    <a class="nl" href="#faq">FAQ</a>
+    <a class="signin" href="https://login.urthmapper.com">Client sign in</a>
+  </div>
+</nav>
+
+<!-- ══ 01 · HERO ══════════════════════════════════════════════════════════
+     The ground is a live parcel grid rather than a photograph: the section
+     grid drawn on canvas with qualifying parcels lighting up, which is the
+     motion the console itself makes when a buy box runs. It replaced a 3.5MB
+     hero video and states the product's whole thesis without a sentence. -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="svc">
+      <span>Off-market sourcing</span>
+      <span>Skip-traced owners</span>
+      <span>Deal scoring &amp; comps</span>
+      <span>Built-in land CRM</span>
+    </div>
+    <h1>Every parcel in your buy box. Sold once. To you.</h1>
+    <p class="lede">We pull your counties' own parcel rolls, run your screens before you ever
+    see a lead, skip-trace what survives — and never sell that row to anyone else.</p>
+    <div class="cta-row">
+      <a class="btn" href="/buybox">Send us your buy box &rarr;</a>
+      <a class="btn ghost" href="#console">See a live console</a>
+    </div>
+  </div>
+  <div class="scrollcue mono">Scroll the county &darr;</div>
+</header>
+
+<!-- ══ 02 · PROOF BAR ═════════════════════════════════════════════════════
+     Only name coverage that is verifiable from shipping markets. Console
+     headcount omitted until confirmed from admin data. -->
+<div class="proof">
+  <div class="wrap">
+    <span class="stat"><b>12</b> counties wired</span>
+    <span class="stat"><b>4</b> states</span>
+    <span class="stat">Dirt to deals since 2024</span>
+  </div>
+</div>
+
+<!-- ══ 03 · THE PROBLEM ═══════════════════════════════════════════════════ -->
+<section class="band problem">
+  <div class="wrap">
+    <div class="problem-grid">
+      <div class="reveal">
+        <div class="secno">01</div>
+        <p>Most land buyers lose an hour a day bouncing between the county site, a flood map,
+        a GIS layer and a skip-tracer — just to qualify a handful of parcels. Then they buy a
+        list, and find out five competitors bought the same rows.</p>
+      </div>
+      <div class="reveal">
+        <div class="land">Urthmapper does the hour, once, and gives each row to one person.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 04 · THE CONSOLE ═══════════════════════════════════════════════════
+     Deliberately ahead of any feature list: a buyer needs to see the console
+     exists before caring how a lead is built. -->
+<section class="band sheet" id="console">
+  <div class="wrap">
+    <div class="band-hd reveal">
+      <div class="secno">02</div>
+      <h2 class="hd">Your console. Your subdomain. Your leads.</h2>
+      <p class="hd-sub">A private, gated map console on your own subdomain. Nothing to install,
+      nothing to configure — sign in and start dialing.</p>
+    </div>
+    <div class="shots">
+      <div class="browser reveal">
+        <div class="bar"><i></i><i></i><i></i><span>you.urthmapper.com</span></div>
+        <img src="/assets/console-map.png" alt="The Urthmapper console: a county map with the scored lead stack beside it" loading="lazy" width="1500" height="950">
+      </div>
+      <div class="notes">
+        <div class="note reveal"><h3><em>01</em>Lead stack</h3>
+          <p>Every parcel that passed your box, ranked. Filter by county, size, value and
+          distress signals in two taps — 132 locked, 15 open, and the open ones call-ready.</p></div>
+        <div class="note reveal"><h3><em>02</em>Lead detail</h3>
+          <p>Owner, contacts, valuations, comps, flood, elevation, delinquency — with sticky
+          Call, Text and Mail actions on the same screen.</p></div>
+        <div class="note reveal"><h3><em>03</em>Works from the truck</h3>
+          <p>The console collapses to a full-screen mobile sheet. Drive the county, pull up the
+          parcel you're parked in front of, and call the owner.</p></div>
+        <div class="note reveal"><h3><em>04</em>Nothing to install</h3>
+          <p>It runs in any browser and installs to a phone home screen like an app. No desktop
+          software, no seats to provision.</p></div>
+      </div>
+    </div>
+    <div class="shots-b">
+      <div class="note reveal" style="border:0;padding:0">
+        <h3><em>Detail</em>Every number on the lead has a source</h3>
+        <p>Assessed value against nearby sales, the FEMA zone, the wetlands test run on the
+        parcel's own boundary, the buildable footprint after setbacks. Tap any of them and the
+        console tells you where it came from.</p>
+      </div>
+      <div class="browser reveal">
+        <div class="bar"><i></i><i></i><i></i><span>lead detail</span></div>
+        <img src="/assets/console-detail.png" alt="Urthmapper lead detail: owner, comps, flood and screening evidence" loading="lazy" width="1500" height="950">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="vband">
+  <video muted loop playsinline preload="none" data-src="/assets/video/band-maplines.mp4" aria-hidden="true"></video>
+  <div class="cap">Your county. Your grid. Your deals.</div>
+</div>
+
+<!-- ══ 05 · ANATOMY OF ONE LEAD ═══════════════════════════════════════════
+     This block replaced two nine-card feature grids. One real parcel with its
+     evidence attached says more than eighteen claims, and it demonstrates the
+     evidence habit rather than asserting it. -->
+<section class="band" id="lead">
+  <div class="wrap">
+    <div class="band-hd reveal">
+      <div class="secno">03</div>
+      <h2 class="hd">Eighteen things had to be true before this showed up.</h2>
+      <p class="hd-sub">Every screen runs before you see the lead, not after. What reaches your
+      stack is what survived them.</p>
+    </div>
+    <div class="anat">
+      <div class="callouts reveal">
+        <div class="callout"><h4>Owner &amp; contacts</h4>
+          <p>Skip-traced, with DNC and TCPA-litigator rows flagged and the refusals documented
+          by name and reason.</p></div>
+        <div class="callout"><h4>Screened dirt</h4>
+          <p>FEMA flood, USFWS wetlands tested against the parcel's own boundary, critical
+          habitat, SSURGO soil build score, buildable acres, TIGER road access.</p></div>
+      </div>
+      <div class="leadcard reveal">
+        <div class="top">
+          <span class="acr">0.34 ac</span>
+          <span class="grade">GRADE A</span>
+        </div>
+        <div class="where">LEHIGH ACRES, FL &middot; LEE COUNTY</div>
+        <dl>
+          <div class="row"><dt>Assessed</dt><dd>$12,400</dd></div>
+          <div class="row"><dt>Flood zone</dt><dd class="pass">X &mdash; clean</dd></div>
+          <div class="row"><dt>Wetlands</dt><dd class="pass">0%</dd></div>
+          <div class="row"><dt>Buildable</dt><dd>0.29 ac</dd></div>
+          <div class="row"><dt>Soil build</dt><dd>78 / 100</dd></div>
+          <div class="row"><dt>Road access</dt><dd class="pass">Fronts</dd></div>
+          <div class="row"><dt>Held</dt><dd>12 years</dd></div>
+          <div class="row"><dt>Taxes</dt><dd>2 yrs delinquent</dd></div>
+        </dl>
+      </div>
+      <div class="callouts right reveal">
+        <div class="callout"><h4>Score &amp; comps</h4>
+          <p>Ranked against a peer median from the same roll, not a blended county average that
+          would bury it.</p></div>
+        <div class="callout"><h4>Motivation</h4>
+          <p>Long hold, tax delinquency, out-of-state owner, estate and heir signals — the
+          reasons someone actually sells.</p></div>
+      </div>
+    </div>
+    <div class="basis reveal">
+      <p><b>And when we can't answer it, the lead says so.</b> Road access is tested physically,
+      against Census road centerlines — a tract served by a recorded easement reads exactly like
+      a landlocked one, so the verdict ships pointing at the plat and title commitment instead of
+      pretending. Every lead states why it passed your box, and names the rules public record
+      can't settle.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 06 · SOLD ONCE ═════════════════════════════════════════════════════
+     Exclusivity lives at the level of the lead, never the county. We do not
+     sell territory: no seats, no claimed markets, no county anyone owns. The
+     hatched pins are rows already delivered to someone — screened out of your
+     stack the way a floodway is screened out of a build. -->
+<section class="band sheet">
+  <div class="wrap">
+    <div class="band-hd reveal">
+      <div class="secno">04</div>
+      <h2 class="hd">We don't sell the same dirt twice.</h2>
+    </div>
+    <div class="sold">
+      <div class="reveal">
+        <div class="pins" aria-hidden="true">
+          <span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin open"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span>
+          <span class="pin hatch"></span><span class="pin open"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin open"></span><span class="pin hatch"></span><span class="pin hatch"></span>
+          <span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin open"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin open"></span>
+          <span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin open"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span>
+          <span class="pin hatch"></span><span class="pin hatch"></span><span class="pin open"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin hatch"></span><span class="pin open"></span><span class="pin hatch"></span>
+        </div>
+        <div class="pinkey">
+          <span><i class="open"></i> Open to you</span>
+          <span><i class="hatch"></i> Already delivered &mdash; gone for good</span>
+        </div>
+      </div>
+      <div class="reveal prose">
+        <p>Every lead we deliver is sold once, to one buyer, forever — enforced by the system,
+        not promised in a sentence. Locked leads never expose mailing data, not in the list and
+        not on the map overlay.</p>
+        <p style="margin-top:16px">Cancel whenever you like. The drip stops, everything already
+        delivered stays yours, and it never gets resold. A list broker sells the same three
+        thousand rows to you and five competitors; we sell each row once and then retire it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 07 · FOURTEEN, NOT TWENTY-FIVE ═════════════════════════════════════
+     The hardest thing on this page for a competitor to copy. It lived only in
+     the onboarding email, where a prospect never saw it. Do not hedge it into
+     an apology — it is a quality claim and the closing line does the work. -->
+<section class="band">
+  <div class="wrap">
+    <div class="fourteen">
+      <div class="bignum reveal">14<small>of 25 owners</small></div>
+      <div class="reveal prose">
+        <div class="secno">05</div>
+        <p style="font-size:19px;color:var(--ink-2)">We traced all twenty-five. Eleven came back
+        as the wrong human, a disconnected line or a dead owner of record — so we refused them
+        instead of billing you for them. Every refusal is documented in your onboarding email,
+        by name and reason.</p>
+        <p class="kicker">Everyone else would have sold you those eleven.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="vband">
+  <video muted loop playsinline preload="none" data-src="/assets/video/band-terrain.mp4" aria-hidden="true"></video>
+  <div class="cap">From buy box to call list</div>
+</div>
+
+<!-- ══ 08 · HOW IT WORKS ══════════════════════════════════════════════════ -->
+<section class="band sheet" id="how">
+  <div class="wrap">
+    <div class="band-hd reveal">
+      <div class="secno">06</div>
+      <h2 class="hd">From buy box to call list</h2>
+      <p class="hd-sub">No demo maze. You tell us what you buy once — we do the county
+      engineering.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="n"><b>01</b><em>~4 minutes</em></div>
+        <h3>Tell us what you actually buy</h3>
+        <p>Counties, acreage, price band, road access, and the deal-breakers you never want to
+        see. Weird boxes welcome: frontage minimums, mobile-home lots, long-hold owners only.</p>
+      </div>
+      <div class="step reveal">
+        <div class="n"><b>02</b><em>we build</em></div>
+        <h3>We wire your counties</h3>
+        <p>Your filters run against the county's own parcel roll <em>before</em> you see a lead,
+        then we enrich what survives. Tampa needed neighborhood polygons, Duval needed
+        per-product quotas with a ZIP carve-out, Houston needed no-zoning jurisdiction logic —
+        each one was real engineering, and that is what you're buying.</p>
+      </div>
+      <div class="step reveal">
+        <div class="n"><b>03</b><em>inside a week</em></div>
+        <h3>Your console goes live</h3>
+        <p>A private map console on your own subdomain, leads scored A to D, and the top of the
+        stack call-ready on day one. Your leads are yours from the moment they land.</p>
+      </div>
+    </div>
+    <div class="marketstrip reveal">
+      <div class="mono">Counties already wired</div>
+      <div class="counties">Lee &middot; Duval &middot; Hillsborough &middot; Brevard &middot; Highlands &middot;
+      Harris &middot; Fort Bend &middot; New Hanover &middot; Brunswick &middot; Onslow &middot; Pender &middot;
+      Jefferson AR</div>
+      <div class="claim">Every lead sold once, to one buyer, forever.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 09 · PRICING ═══════════════════════════════════════════════════════
+     Tiers are lead-volume packages. Nothing on this shelf is a place: no
+     per-county price, no metro bundle, no exclusivity column. The buy box
+     decides which counties get wired — that is scope of work, captured on the
+     intake form, not a territory with a price on it. Figures track the tier
+     ladder in docs/PRICING.md; keep them in step with it. -->
+<section class="band" id="pricing">
+  <div class="wrap">
+    <div class="band-hd reveal">
+      <div class="secno">07</div>
+      <h2 class="hd">Screened, skip-traced, sold once.</h2>
+      <p class="hd-sub">Pick the volume you can actually work. One closed land deal pays for
+      years of Urthmapper.</p>
+    </div>
+    <div class="plans">
+      <div class="plan ghosted reveal">
+        <div class="pname"><span>Starter</span></div>
+        <div class="price">$97<small>/MO</small></div>
+        <ul>
+          <li>250 screened leads up front</li>
+          <li>+50 every month</li>
+          <li>Quarterly re-scrape</li>
+          <li>Console, map, dialer, CRM, exports</li>
+        </ul>
+        <a class="btn" href="/buybox">Send us your buy box &rarr;</a>
+      </div>
+      <div class="plan hot reveal">
+        <div class="pname"><span>Growth</span><span>Most people start here</span></div>
+        <div class="price">$197<small>/MO</small></div>
+        <ul>
+          <li>750 screened leads up front</li>
+          <li>+125 every month</li>
+          <li>Quarterly re-scrape</li>
+          <li>Console, map, dialer, CRM, exports</li>
+          <li>Founding rate $147/mo, locked for life — five spots</li>
+        </ul>
+        <a class="btn" href="/buybox">Send us your buy box &rarr;</a>
+      </div>
+      <div class="plan ghosted reveal">
+        <div class="pname"><span>Pro</span></div>
+        <div class="price">$397<small>/MO</small></div>
+        <ul>
+          <li>1,500 screened leads up front</li>
+          <li>+250 every month</li>
+          <li>Monthly re-scrape</li>
+          <li>Real comps and ARV included</li>
+          <li>Tax-deed and auction overlay where the county has one</li>
+        </ul>
+        <a class="btn" href="/buybox">Send us your buy box &rarr;</a>
+      </div>
+    </div>
+    <p class="pricenote reveal">
+      Counts are what your box yields, capped by the county roll — we don't pad a batch.<br>
+      Annual = two months free and setup waived &middot; Onboarding $249, +$99 per extra county, one time<br>
+      Custom-engineered buy boxes from $497 &middot; Counties change setup once, never the monthly<br>
+      Statewide or national box? Tell us on the form and we'll quote it.
+    </p>
+    <div class="guarantees reveal">
+      <div class="gtee"><b>72 hours</b><span>Your first batch lands within three days of yes, on a standard box.</span></div>
+      <div class="gtee"><b>30 days</b><span>Any disconnected or wrong number replaced free.</span></div>
+      <div class="gtee"><b>Connect floor</b><span>If under half the callable numbers reach the named owner in month one, we re-trace at our cost.</span></div>
+      <div class="gtee"><b>Cancel anytime</b><span>The drip stops. Everything delivered stays yours and is never resold.</span></div>
+    </div>
+    <div class="included reveal">
+      <h4>Included on every tier</h4>
+      <ul>
+        <li>Branded console on your subdomain</li>
+        <li>2D / 3D map with hex density</li>
+        <li>Skip-traced owner contacts</li>
+        <li>Documented trace refusals</li>
+        <li>Flood, wetlands and habitat screens</li>
+        <li>SSURGO soil build score</li>
+        <li>Buildable acres and setbacks</li>
+        <li>Road-access verdict with basis</li>
+        <li>Opportunity Zone flags</li>
+        <li>Tax-delinquency signals</li>
+        <li>Batch dialer</li>
+        <li>CRM with statuses and notes, 2 users</li>
+        <li>Route planning and owner-distance</li>
+        <li>Mail merge</li>
+        <li>CSV, Excel and KML export</li>
+        <li>Street View on the parcel</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 10 · FAQ, FOUNDER, FOOTER ══════════════════════════════════════════ -->
+<section class="band sheet" id="faq">
+  <div class="wrap">
+    <div class="band-hd reveal">
+      <div class="secno">08</div>
+      <h2 class="hd">Questions</h2>
+    </div>
+    <div class="faq">
+      <details class="qa"><summary>Do you lock my counties to me?</summary>
+        <div class="a">No — we don't sell territory. We sell leads, and each one is sold exactly
+        once. Another buyer may work the same county; they will never work the same parcel,
+        because the row we gave you is retired the moment it's yours. That holds after you
+        cancel, too.</div></details>
+      <details class="qa"><summary>Where do the leads come from?</summary>
+        <div class="a">Straight from the source: county assessor rolls, GIS parcel layers,
+        recorded sales and tax-delinquency lists — filtered to your buy box, then enriched with
+        skip-tracing, flood and wetland screens, soil, buildable area and comps. It isn't
+        recycled list-broker data.</div></details>
+      <details class="qa"><summary>Why did I only get 14 phone numbers out of 25?</summary>
+        <div class="a">Because we traced all 25 and refused 11. An address that resolved to the
+        wrong human, a disconnected line, a deceased owner of record, a DNC or litigator flag —
+        each one is a number you'd have burned an afternoon discovering. You get the refusals
+        in writing with your batch, by name and reason. Everyone else would have billed you for
+        all 25.</div></details>
+      <details class="qa"><summary>What if my box only yields 300 parcels?</summary>
+        <div class="a">Then we deliver 300 and tell you why — your screens killed the other
+        2,700. We'd rather sell you the real number and explain it than pad a batch with leads
+        that half-passed. If the count comes in too small to work, we'll widen the box with you
+        before anything ships.</div></details>
+      <details class="qa"><summary>What if my buy box is weird?</summary>
+        <div class="a">Weird is the whole point. Frontage minimums, mobile-home eligibility,
+        neighborhood polygons, per-product quotas, long-hold owners only, sub-market value
+        targets — the filters are engineered per client, not picked from a dropdown. That
+        engineering is what a list vendor can't do.</div></details>
+      <details class="qa"><summary>How fresh is the data?</summary>
+        <div class="a">Leads are pulled from county records when your console is built, then
+        re-scraped quarterly on Starter and Growth, monthly on Pro. New delinquencies, new
+        sales and ownership changes flow in with each pass instead of going stale in a
+        CSV.</div></details>
+      <details class="qa"><summary>Do I need any other software?</summary>
+        <div class="a">No. The map, the lead detail, the comps, the dialer and the CRM pipeline
+        all live in one console on your own subdomain. It runs in any browser, phone
+        included.</div></details>
+      <details class="qa"><summary>What happens if I cancel?</summary>
+        <div class="a">The drip stops and the console stays up through your paid period.
+        Everything already delivered is yours to keep and is never resold to anyone — that's
+        true whether you're active or not.</div></details>
+    </div>
+
+    <div class="founder reveal" style="margin-top:clamp(40px,6vw,72px)">
+      <blockquote>&ldquo;Most land buyers lose an hour a day bouncing between the county site, a
+      flood map, a GIS layer and a skip-tracer — just to qualify a handful of parcels. I built
+      Urthmapper so that hour becomes one click, and so the parcels at the end of it belong to
+      one person.&rdquo;</blockquote>
+      <div class="who">
+        <b>Ethan Stocks</b>
+        Founder, Urthmapper<br>
+        Los Angeles, CA<br>
+        <a href="mailto:ethan@urthmapper.com">ethan@urthmapper.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footmega">Dirt to deals.</div>
+    <div class="footcta">
+      <a class="btn" href="/buybox">Send us your buy box &rarr;</a>
+      <span class="mono">Four minutes. We'll come back with your county's real count.</span>
+    </div>
+    <div class="footrow">
+      <span>&copy; 2026 Urthmapper</span>
+      <span>Every lead sold once, to one buyer, forever</span>
+      <!-- The policy link belongs in the footer of every page, not just near a
+           form: it is where a carrier reviewing our 10DLC campaign looks for it,
+           and where someone who just got a text from us looks for the way out. -->
+      <span><a href="/privacy">SMS &amp; privacy policy</a> &middot; <a href="/sms-optin">SMS opt-in</a></span>
+      <span><a href="mailto:ethan@urthmapper.com">ethan@urthmapper.com</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── reveal on scroll ──────────────────────────────────────────────────── */
+(function(){
+  var els=[].slice.call(document.querySelectorAll('.reveal'));
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in');});return;}
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);} });
+  },{threshold:0.12});
+  els.forEach(function(el,i){el.style.transitionDelay=(i%4)*0.05+'s';io.observe(el);});
+})();
+
+/* ── band videos: fetch only when they come into view ──────────────────── */
+(function(){
+  var vids=[].slice.call(document.querySelectorAll('.vband video'));
+  if(!vids.length||!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      var v=e.target;
+      if(e.isIntersecting){ if(!v.src&&v.dataset.src) v.src=v.dataset.src;
+        v.play&&v.play().catch(function(){}); }
+      else { v.pause&&v.pause(); }
+    });
+  },{rootMargin:'250px'});
+  vids.forEach(function(v){io.observe(v);});
+})();
+
+/* ── mobile nav ────────────────────────────────────────────────────────── */
+(function(){
+  var b=document.getElementById('nav-burger');
+  if(!b) return;
+  b.addEventListener('click',function(){
+    var open=document.body.classList.toggle('menu-open');
+    b.setAttribute('aria-expanded',open?'true':'false');
+  });
+  document.querySelectorAll('#navlinks a').forEach(function(a){
+    a.addEventListener('click',function(){
+      document.body.classList.remove('menu-open');
+      b.setAttribute('aria-expanded','false');
+    });
+  });
+})();
+</script>
+</body>
+</html>

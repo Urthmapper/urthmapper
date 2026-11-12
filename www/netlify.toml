@@ -1,0 +1,94 @@
+[build]
+  publish = "."
+  command = "echo 'static www'"
+
+[[redirects]]
+  from = "/wholesalers"
+  to = "/wholesalers.html"
+  status = 200
+
+[[redirects]]
+  from = "/data-coverage"
+  to = "/data-coverage.html"
+  status = 200
+
+[[redirects]]
+  from = "/methodology"
+  to = "/methodology.html"
+  status = 200
+
+[[redirects]]
+  from = "/demo"
+  to = "/demo.html"
+  status = 200
+
+[[redirects]]
+  from = "/demo-thanks"
+  to = "/demo-thanks.html"
+  status = 200
+
+[[redirects]]
+  from = "/privacy"
+  to = "/privacy.html"
+  status = 200
+
+[[redirects]]
+  from = "/sms-optin"
+  to = "/sms-optin.html"
+  status = 200
+
+[[redirects]]
+  from = "/buybox"
+  to = "/buybox.html"
+  status = 200
+
+# Legacy homepage anchors → wholesalers
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 200
+
+[[redirects]]
+  from = "/pricing"
+  to = "/wholesalers#pricing"
+  status = 301
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[redirects]]
+  from = "/buybox-thanks"
+  to = "/buybox-thanks.html"
+  status = 200
+
+[[redirects]]
+  from = "/solutions/powered-land-assemblers"
+  to = "/solutions/powered-land-assemblers.html"
+  status = 200
+
+[[redirects]]
+  from = "/solutions/data-center-developers"
+  to = "/solutions/data-center-developers.html"
+  status = 200
+
+[[redirects]]
+  from = "/solutions/natural-resource-investors"
+  to = "/solutions/natural-resource-investors.html"
+  status = 200
+
+[[redirects]]
+  from = "/solutions/landmen-lease-buyers"
+  to = "/solutions/landmen-lease-buyers.html"
+  status = 200
+
+[[redirects]]
+  from = "/solutions/mineral-royalty-funds"
+  to = "/solutions/mineral-royalty-funds.html"
+  status = 200
